@@ -13,6 +13,8 @@ export class MapComponent implements AfterViewInit {
     readonly accessToken = 'pk.eyJ1IjoiZGVsaXJpb3VzIiwiYSI6ImNra3duNmlhNzA2dXUydmw2aTIzMDVlNHIifQ.gC3ae8QyA_ercwGZO_koMw';
 
     private initMap(): void {
+        // Lire : https://leafletjs.com/examples/mobile/
+
         this.map = L.map('map', {
             center: [69, 69],
             zoom: 10
@@ -44,6 +46,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     getGeolocation(): Promise<any> {
+        // TSLint rale à cause du "shadow-name" de resolve mais ça marche, osef.
         return new Promise((resolve, reject) => {
             navigator.geolocation.watchPosition(
                 position => {
@@ -58,7 +61,7 @@ export class MapComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         this.getGeolocation().then(pos =>
         {
-            console.log(`Positon: ${pos.lng} ${pos.lat}`);
+            console.log(`Position: ${pos.lat} ${pos.lng}`);
         });
         this.initMap();
     }
