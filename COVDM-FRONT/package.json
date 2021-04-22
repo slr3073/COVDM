@@ -21,8 +21,13 @@
     "@angular/platform-browser": "~11.2.4",
     "@angular/platform-browser-dynamic": "~11.2.4",
     "@angular/router": "~11.2.4",
+    "constants": "0.0.2",
+    "fs": "0.0.1-security",
     "leaflet": "^1.7.1",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
     "rxjs": "~6.6.0",
+    "stream": "0.0.2",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
