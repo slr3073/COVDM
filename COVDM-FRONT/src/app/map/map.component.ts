@@ -23,12 +23,36 @@ export class MapComponent implements AfterViewInit {
           tileSize: 512,
           zoomOffset: -1
       });
-
       mapboxTiles.addTo(this.map);
   }
+/*  getLocation(): void{
+      if (navigator.geolocation) {
+        console.log(navigator.permissions.query({name: 'geolocation'}));
+        navigator.geolocation.getCurrentPosition((position => {
+            const latitude = position.coords.latitude ;
+            const longitude = position.coords.longitude;
+            console.log(longitude, latitude);
+        }));
+      } else {
+          console.warn('Geolocalisation refusee.');
+      }
+  }*/
+
   constructor() { }
 
   ngAfterViewInit(): void {
+      const getLocation = () => {
+          return new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(result => {
+                  resolve(result);
+              }, err => {
+                  reject(err);
+              });
+          });
+      };
+      getLocation()
+          .then(console.log)
+          .catch(console.error);
       this.initMap();
   }
 
