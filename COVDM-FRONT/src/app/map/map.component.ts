@@ -1,6 +1,21 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import * as L from 'leaflet';
-import {resolve} from '@angular/compiler-cli/src/ngtsc/file_system';
+import {icon, LatLng, Marker} from 'leaflet';
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+    iconRetinaUrl,
+    iconUrl,
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 @Component({
     selector: 'app-map',
@@ -16,7 +31,8 @@ export class MapComponent implements AfterViewInit {
         // Lire : https://leafletjs.com/examples/mobile/
 
         this.map = L.map('map', {
-            center: [69, 69],
+            // coords à changer.
+            center: [69, 420],
             zoom: 10
         });
 
@@ -29,19 +45,6 @@ export class MapComponent implements AfterViewInit {
         mapboxTiles.addTo(this.map);
     }
 
-    /*  getLocation(): void{
-          if (navigator.geolocation) {
-            console.log(navigator.permissions.query({name: 'geolocation'}));
-            navigator.geolocation.getCurrentPosition((position => {
-                const latitude = position.coords.latitude ;
-                const longitude = position.coords.longitude;
-                console.log(longitude, latitude);
-            }));
-          } else {
-              console.warn('Geolocalisation refusee.');
-          }
-      }*/
-
     constructor() {
     }
 
@@ -50,8 +53,8 @@ export class MapComponent implements AfterViewInit {
         return new Promise((resolve, reject) => {
             navigator.geolocation.watchPosition(
                 position => {
-                resolve({ lat: position.coords.latitude, lng: position.coords.longitude });
-            },
+                    resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                },
                 error => {
                     reject(error);
                 });
@@ -59,11 +62,16 @@ export class MapComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.getGeolocation().then(pos =>
-        {
-            console.log(`Position: ${pos.lat} ${pos.lng}`);
-        });
         this.initMap();
+        // Cherche la localisation de l'utilisateur.
+        // Réorganiser un peu tout ça...
+        this.getGeolocation().then(pos => {
+            console.log(`Position: ${pos.lat} ${pos.lng}`);
+            const latlng = new LatLng(pos.lat, pos.lng);
+            this.map.flyTo(latlng);
+            L.marker(latlng).addTo(this.map);
+            L.circle(latlng, {radius: 10000}).addTo(this.map);
+        });
     }
 
 }
