@@ -28,14 +28,11 @@ export class MapComponent implements AfterViewInit {
     readonly accessToken = 'pk.eyJ1IjoiZGVsaXJpb3VzIiwiYSI6ImNra3duNmlhNzA2dXUydmw2aTIzMDVlNHIifQ.gC3ae8QyA_ercwGZO_koMw';
 
     private initMap(): void {
-        // Lire : https://leafletjs.com/examples/mobile/
-
         this.map = L.map('map', {
-            // coords à changer.
-            center: [69, 420],
-            zoom: 10
+            // coords du Frankistan.
+            center: [46.7111, 1.7191],
+            zoom: 5
         });
-
         // tslint:disable-next-line:max-line-length
         const mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + this.accessToken, {
             attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -43,6 +40,8 @@ export class MapComponent implements AfterViewInit {
             zoomOffset: -1
         });
         mapboxTiles.addTo(this.map);
+
+        LCG.geocoder().addTo(this.map);
     }
 
     constructor() {
@@ -55,8 +54,8 @@ export class MapComponent implements AfterViewInit {
                 position => {
                     resolve({lat: position.coords.latitude, lng: position.coords.longitude});
                 },
-                error => {
-                    reject(error);
+                err => {
+                    reject(err);
                 });
         });
     }
@@ -68,10 +67,15 @@ export class MapComponent implements AfterViewInit {
         this.getGeolocation().then(pos => {
             console.log(`Position: ${pos.lat} ${pos.lng}`);
             const latlng = new LatLng(pos.lat, pos.lng);
-            this.map.flyTo(latlng);
+
             L.marker(latlng).addTo(this.map);
             L.circle(latlng, {radius: 10000}).addTo(this.map);
-        });
+            this.map.flyTo(latlng, 10, {
+                animate: true,
+                duration: 2
+            });
+        })
+            .catch(err => console.warn(err.message));
     }
 
 }
