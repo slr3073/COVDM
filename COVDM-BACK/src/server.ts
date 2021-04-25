@@ -1,7 +1,10 @@
 import express, {Express, NextFunction, Request, Response} from "express"
 import bodyParser from "body-parser"
 import Post, {IPost} from "./models/post"
-import mongoose from "mongoose"
+import vaccination_centers, {VaccinationCenter} from "./models/getVaccinationCenters"
+import users, {User} from "./models/getUsers"
+import test_centers, {TestCenter} from "./models/getTestCenters"
+import mongoose, {Schema} from "mongoose"
 
 export class Server {
     constructor(readonly port: number) {
@@ -40,6 +43,24 @@ export class Server {
             Post.find().then(posts => {
                 res.status(200).json(posts)
             })
+        })
+
+        app.get('/getCentreVaccinations', (req: Request, res: Response) => {
+            vaccination_centers.find().then(posts => {
+                res.status(200).json(posts)
+            });
+        });
+
+        app.get('/getUsers', (req: Request, res: Response) => {
+            users.find().then(posts => {
+                res.status(200).json(posts)
+            });
+        })
+
+        app.get('/getTestCenters', (req: Request, res: Response) => {
+            test_centers.find().then(posts => {
+                res.status(200).json(posts)
+            });
         })
 
         app.listen(this.port)

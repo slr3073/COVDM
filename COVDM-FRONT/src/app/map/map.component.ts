@@ -1,10 +1,11 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as L from 'leaflet';
 import {icon, LatLng, Marker} from 'leaflet';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 import 'leaflet-geosearch/dist/geosearch.css';
 import 'leaflet-geosearch/assets/css/leaflet.css';
 
+// Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -49,8 +50,10 @@ export class MapComponent implements AfterViewInit {
             navigator.geolocation.watchPosition(
                 position => {
                     resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-                    },
-                err => {reject(err); });
+                },
+                err => {
+                    reject(err);
+                });
         });
     }
 
@@ -87,5 +90,4 @@ export class MapComponent implements AfterViewInit {
         })
             .catch(err => console.warn(err.message));
     }
-
 }
