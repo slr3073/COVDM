@@ -19,7 +19,6 @@ export class TestCenterService {
         this.http.get<GetTestCenterResponse[]>("http://localhost:4000/getTestCenters")
             .subscribe((data: GetTestCenterResponse[]) => {
                 let tmp: TestCenter[] = []
-                console.log(data)
                 for (const testCenter of data) {
                     const tempis: TestCenter = {
                         _id: testCenter._id,

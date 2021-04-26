@@ -20,7 +20,6 @@ export class VaccinationCenterService {
         this.http.get<GetVaccinationCenterResponse[]>("http://localhost:4000/getVaccinationCenters")
             .subscribe((data: GetVaccinationCenterResponse[]) => {
                 let tmp: VaccinationCenter[] = []
-                console.log(data)
                 for (const vaccinationCenter of data) {
                     const tempis: VaccinationCenter = {
                         _id: vaccinationCenter._id,
