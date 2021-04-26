@@ -17,7 +17,7 @@
     "target": "es2015",
     "module": "esnext",
     "lib": [
-      "es2018",
+      "es2015",
       "dom",
     ],
     "types": ["node"],

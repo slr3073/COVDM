@@ -45,7 +45,7 @@ export class Server {
             })
         })
 
-        app.get('/getCentreVaccinations', (req: Request, res: Response) => {
+        app.get('/getVaccinationCenters', (req: Request, res: Response) => {
             vaccination_centers.find().then(posts => {
                 res.status(200).json(posts)
             });
