@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {OnInit, Component} from '@angular/core';
 import * as L from 'leaflet';
 import {icon, LatLng, Marker} from 'leaflet';
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
@@ -26,7 +26,7 @@ Marker.prototype.options.icon = iconDefault;
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit {
 
     private map;
 
@@ -71,7 +71,7 @@ export class MapComponent implements AfterViewInit {
         this.map.addControl(searchControl);
     }
 
-    ngAfterViewInit(): void {
+    ngOnInit(): void {
         this.initMap();
         this.initGeocoder();
         // Cherche la localisation de l'utilisateur.

@@ -12,6 +12,7 @@ export class VaccinationCenterService {
     private _vaccinationCenters: VaccinationCenter[] = []
     private _vaccinationCentersUpdated: Subject<VaccinationCenter[]> = new Subject<VaccinationCenter[]>()
 
+
     constructor(private http: HttpClient) {
     }
 
