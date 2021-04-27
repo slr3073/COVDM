@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core"
 import {HttpClient} from "@angular/common/http"
 import {Observable, Subject} from "rxjs"
-import {GetTestCenterResponse} from "./models/http/GET-testcenter.model"
 import {TestCenter} from "./models/testcenters.model"
+import {GetTestCenterResponse} from "./models/http/GET-testcenter.model"
 
 @Injectable({
     providedIn: "root"

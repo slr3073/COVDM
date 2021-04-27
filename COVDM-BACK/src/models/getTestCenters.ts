@@ -9,7 +9,7 @@ export interface TestCenter extends Document {
     adresse: string,
     do_prel: string,
     do_antigenic: string,
-    longitutde: number,
+    longitude: number,
     latitude: number,
     mod_prel: string,
     public: string,

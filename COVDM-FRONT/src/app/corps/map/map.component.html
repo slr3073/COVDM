@@ -3,3 +3,13 @@
         <div id="map"></div>
     </div>
 </div>
+<button mat-flat-button color="primary" type="button" id="locationButton" (click)="goBackToLocation()" [disabled]="!hasAllowedGeolocation">Revenir à ma localisation</button>
+<div class="checkboxes">
+    <mat-checkbox checked="true" id="checkboxVaccinationCenters">Afficher les centres
+        de vaccination.
+    </mat-checkbox>
+    <br>
+    <mat-checkbox checked="false" id="toggleTestCenters">Afficher les centres de tests.
+    </mat-checkbox>
+</div>
+
