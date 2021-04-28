@@ -4,8 +4,8 @@
     </div>
 </div>
 
-<button mat-flat-button color="primary" type="button" id="locationButton" (click)="goBackToLocation()"
-        [disabled]="!hasAllowedGeolocation">Revenir à ma localisation
+<button mat-flat-button color="primary" type="button" id="locationButton" *ngIf="hasAllowedGeolocation" (click)="goBackToLocation()">
+    Revenir à ma localisation
 </button>
 
 <div class="checkboxes">

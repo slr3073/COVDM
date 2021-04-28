@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core"
 import {HttpClient} from "@angular/common/http"
-import {BehaviorSubject, Observable, Subject} from "rxjs"
+import {Observable, Subject} from "rxjs"
 import {TestCenter} from "./models/testcenters.model"
 import {GetTestCenterResponse} from "./models/http/GET-testcenter.model"
 
@@ -15,7 +15,7 @@ export class TestCenterService {
     constructor(private http: HttpClient) {
     }
 
-    fetchTestCenters(): void {
+    fetchTestCenters(callback: () => void): void {
         this.http.get<GetTestCenterResponse[]>("http://localhost:4000/getTestCenters")
             .subscribe((data: GetTestCenterResponse[]) => {
                 let tmp: TestCenter[] = []
@@ -37,11 +37,10 @@ export class TestCenterService {
                     tmp.push(tempis)
                 }
                 this._testCenters = [...tmp]
-                this._testCentersUpdated
-                    .next(this._testCenters)
-                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
-                this._testCentersUpdated = new Subject<any>()
+                this._testCentersUpdated.next(this._testCenters)
+                callback()
             })
+
     }
 
     get testCenterObservable(): Observable<TestCenter[]> {

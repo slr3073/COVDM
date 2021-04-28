@@ -16,19 +16,18 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    fetchUsers(): void {
+    fetchUsers(callback: () => void): void {
         this.http.get<GetUserResponse[]>("http://localhost:4000/getUsers")
             .subscribe((data: GetUserResponse[]) => {
                 let tmp: User[] = []
-                for (const user of data) {
+                for (const user of data)
                     tmp.push({first_name: user.first_name, last_name: user.last_name})
-                }
+
                 this._users = [...tmp]
-                this._usersUpdated
-                    .next(this._users)
-                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
-                this._usersUpdated = new Subject<any>()
+                this._usersUpdated.next(this._users)
+                callback()
             })
+
     }
 
     get userObservable(): Observable<User[]> {

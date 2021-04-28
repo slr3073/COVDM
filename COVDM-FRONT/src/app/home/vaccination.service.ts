@@ -15,12 +15,13 @@ export class VaccinationCenterService {
     constructor(private http: HttpClient) {
     }
 
-    fetchVaccinationCenters(): void {
+    fetchVaccinationCenters(callback: () => void): any {
         this.http.get<GetVaccinationCenterResponse[]>("http://localhost:4000/getVaccinationCenters")
             .subscribe((data: GetVaccinationCenterResponse[]) => {
+                console.log("fetch vaccination center")
                 let tmp: VaccinationCenter[] = []
                 for (const vaccinationCenter of data) {
-                    const tempis: VaccinationCenter = {
+                    const vacCenter: VaccinationCenter = {
                         _id: vaccinationCenter._id,
                         adr_num: vaccinationCenter.adr_num,
                         adr_voie: vaccinationCenter.adr_voie,
@@ -48,13 +49,13 @@ export class VaccinationCenterService {
                         structure_voie: vaccinationCenter.structure_voie
 
                     }
-                    tmp.push(tempis)
+                    tmp.push(vacCenter)
                 }
+
                 this._vaccinationCenters = [...tmp]
-                this._vaccinationCentersUpdated
-                    .next(this._vaccinationCenters)
-                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
-                this._vaccinationCentersUpdated = new Subject<any>()
+                this._vaccinationCentersUpdated.next(this._vaccinationCenters)
+
+                callback()
             })
     }
 

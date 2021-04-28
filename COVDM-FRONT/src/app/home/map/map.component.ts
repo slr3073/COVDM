@@ -1,19 +1,13 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
-
-// Imports des librairies de leaflet.
-import * as L from "leaflet"
+import * as L from "leaflet"// Imports des librairies de leaflet.
 import {icon, LatLng, Marker} from "leaflet"
 import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"
 import * as L1 from "leaflet.markercluster"
-
-// Import des styles nécessaires aux plugins de leaflet
-import "leaflet-geosearch/dist/geosearch.css"
+import "leaflet-geosearch/dist/geosearch.css" // Import des styles nécessaires aux plugins de leaflet
 import "leaflet-geosearch/assets/css/leaflet.css"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
-
-// Import des services.
-import {Subscription} from "rxjs"
+import {Subscription} from "rxjs" // Import des services.
 import {TestCenter} from "../models/testcenters.model"
 import {TestCenterService} from "../testcenters.service"
 import {VaccinationCenter} from "../models/vaccinationcenter.model"
@@ -116,52 +110,33 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     addVaccinationCenter(vaccinationCenter: VaccinationCenter): any {
-        // const pt = new (L.marker as any)({lat: vaccinationCenter.lat_coor1, lng: vaccinationCenter.long_coor1},
-        //     {icon: vaccineIcon})
-        //     .bindPopup(vaccinationCenter.nom)
-        // .on("click", (event: MouseEvent) => {
-        //     event.preventDefault
-        //     const clickedMarker: L.Marker = <L.Marker><unknown>event.target
-        //     console.log(clickedMarker)
-        // })
-        // const customMarker = new CustomMarker({lat: vaccinationCenter.lat_coor1, lng: vaccinationCenter.long_coor1},
-        //     {icon: vaccineIcon}, {id: vaccinationCenter._id, type: "VaccinationCenter"})
-        //     .addTo(this.map)
-        //     .bindPopup(vaccinationCenter.nom)
-        //     // Ne pas typer le param event en MouseEvent sinon ça marche pas.
-        //     // Merci à certains typages de Leaflet qui cassent des trucs.
-        //     .on("click", (event: LeafletEvent) => {
-        //         // Y a pas de property preventDefault sur le type LeafletEvent.
-        //         // event.preventDefault
-        //         const clickedMarker: L.Marker = <L.Marker><unknown>event.target
-        //         console.log(clickedMarker)
-        //     })
+        let numaddr = vaccinationCenter.adr_num ?? ""
         return new (L.marker as any)({
                 lat: vaccinationCenter.lat_coor1,
                 lng: vaccinationCenter.long_coor1
             },
             {icon: vaccineIcon})
             .bindPopup(
-                '<b>Nom : </b>' + vaccinationCenter.nom + '<br>' +
-                '<b>Adresse : </b>' + vaccinationCenter.adr_num + ' ' + vaccinationCenter.adr_voie + '<br>' +
-                '<b>Ville : </b>' + vaccinationCenter.com_cp + ' ' + vaccinationCenter.com_nom + '<br>' +
-                '<b>Tel : </b>' + vaccinationCenter.rdv_tel
+                "<b>Nom : </b>" + vaccinationCenter.nom + "<br>" +
+                "<b>Adresse : </b>" + numaddr + " " + vaccinationCenter.adr_voie + "<br>" +
+                "<b>Ville : </b>" + vaccinationCenter.com_cp + " " + vaccinationCenter.com_nom + "<br>" +
+                "<b>Tel : </b>" + vaccinationCenter.rdv_tel
             )
     }
 
     addTestCenter(testCenter: TestCenter): any {
-        let horaire = testCenter.horaire || '<strong>HORAIRES INDISPONIBLES.</strong>'
+        let horaire = testCenter.horaire || "<strong>HORAIRES INDISPONIBLES.</strong>"
         return new (L.marker as any)({
                 lat: testCenter.latitude,
                 lng: testCenter.longitude
             },
             {icon: testCenterIcon})
             .bindPopup(
-                '<b>Nom : </b>' + testCenter.rs + '<br>' +
-                '<b>Adresse : </b>' + testCenter.adresse + '<br>' +
-                '<b>Prendre RDV : </b>' + testCenter.tel_rdv + '<br>' +
-                '<b>Horaires : </b>' + horaire + '<br>' +
-                '<b>Mode prélèvement : </b>' + testCenter.mod_prel
+                "<b>Nom : </b>" + testCenter.rs + "<br>" +
+                "<b>Adresse : </b>" + testCenter.adresse + "<br>" +
+                "<b>Prendre RDV : </b>" + testCenter.tel_rdv + "<br>" +
+                "<b>Horaires : </b>" + horaire + "<br>" +
+                "<b>Mode prélèvement : </b>" + testCenter.mod_prel
             )
     }
 
@@ -170,24 +145,18 @@ export class MapComponent implements OnInit, OnDestroy {
         this.initGeocoder()
         this.getGeolocation().then(pos => {
             this.hasAllowedGeolocation = true
-            console.log(`Position: ${pos.lat} ${pos.lng}`)
 
             this.latlng = new LatLng(pos.lat, pos.lng)
 
             L.marker(this.latlng).addTo(this.map).bindPopup("Vous êtes ici.")
-            //L.marker(latlng, {icon: vaccineIcon}).addTo(this.map)
+
             L.circle(this.latlng, {radius: 10000}).addTo(this.map)
             this.map.flyTo(this.latlng, 10, {
                 animate: true,
                 duration: 1.5
             })
-        })
-            .catch(err => console.warn(err.message))
-        this.vaccinationCenterService.fetchVaccinationCenters()
-        this._vaccinationCenterSub = this.vaccinationCenterService.vaccinationCentersObservable.subscribe((vaccinationCenters: VaccinationCenter[]) => {
-
-            this.vaccinationCenters = vaccinationCenters
-
+        }).catch(err => console.warn(err.message))
+        this.vaccinationCenterService.fetchVaccinationCenters(() => {
             for (let i = 0; i < this.vaccinationCenters.length; i++) {
                 const vc = this.addVaccinationCenter(this.vaccinationCenters[i])
                 this.markersVaccineCluster.addLayer(vc)
@@ -195,14 +164,20 @@ export class MapComponent implements OnInit, OnDestroy {
             this.map.addLayer(this.markersVaccineCluster)
         })
 
-        this.testCenterService.fetchTestCenters()
-        this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {
-            this.testCenters = testCenters
+        this._vaccinationCenterSub = this.vaccinationCenterService.vaccinationCentersObservable.subscribe((vaccinationCenters: VaccinationCenter[]) => {
+            this.vaccinationCenters = vaccinationCenters
+        })
+
+        this.testCenterService.fetchTestCenters(()=> {
             for (let j = 0; j < this.testCenters.length; j++) {
                 const tc: TestCenter = this.addTestCenter(this.testCenters[j])
                 this.markersTestCCluster.addLayer(tc)
             }
             this.map.addLayer(this.markersTestCCluster)
+        })
+
+        this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {
+            this.testCenters = testCenters
         })
     }
 
