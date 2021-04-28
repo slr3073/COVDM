@@ -141,16 +141,28 @@ export class MapComponent implements OnInit, OnDestroy {
                 lng: vaccinationCenter.long_coor1
             },
             {icon: vaccineIcon})
-            .bindPopup(vaccinationCenter.nom)
+            .bindPopup(
+                '<b>Nom : </b>' + vaccinationCenter.nom + '<br>' +
+                '<b>Adresse : </b>' + vaccinationCenter.adr_num + ' ' + vaccinationCenter.adr_voie + '<br>' +
+                '<b>Ville : </b>' + vaccinationCenter.com_cp + ' ' + vaccinationCenter.com_nom + '<br>' +
+                '<b>Tel : </b>' + vaccinationCenter.rdv_tel
+            )
     }
 
     addTestCenter(testCenter: TestCenter): any {
+        let horaire = testCenter.horaire || '<strong>HORAIRES INDISPONIBLES.</strong>'
         return new (L.marker as any)({
                 lat: testCenter.latitude,
                 lng: testCenter.longitude
             },
             {icon: testCenterIcon})
-            .bindPopup(testCenter.rs)
+            .bindPopup(
+                '<b>Nom : </b>' + testCenter.rs + '<br>' +
+                '<b>Adresse : </b>' + testCenter.adresse + '<br>' +
+                '<b>Prendre RDV : </b>' + testCenter.tel_rdv + '<br>' +
+                '<b>Horaires : </b>' + horaire + '<br>' +
+                '<b>Mode prélèvement : </b>' + testCenter.mod_prel
+            )
     }
 
     ngOnInit(): void {
