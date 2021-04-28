@@ -27,10 +27,11 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.userService.fetchUsers()
-        this._userSub = this.userService.userObservable.subscribe((users: User[]) => {this.users = users})
         this.testCenterService.fetchTestCenters()
-        this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {this.testCenters = testCenters})
         this.vaccinationCenterService.fetchVaccinationCenters()
+
+        this._userSub = this.userService.userObservable.subscribe((users: User[]) => {this.users = users})
+        this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {this.testCenters = testCenters})
         this._vaccinationCenterSub = this.vaccinationCenterService.vaccinationCentersObservable.subscribe((vaccinationCenters: VaccinationCenter[]) => {this.vaccinationCenters = vaccinationCenters})
     }
 

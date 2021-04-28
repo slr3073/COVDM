@@ -1,10 +1,9 @@
 import express, {Express, NextFunction, Request, Response} from "express"
 import bodyParser from "body-parser"
-import Post, {IPost} from "./models/post"
-import vaccination_centers, {VaccinationCenter} from "./models/getVaccinationCenters"
-import users, {User} from "./models/getUsers"
-import test_centers, {TestCenter} from "./models/getTestCenters"
-import mongoose, {Schema} from "mongoose"
+import vaccination_centers from "./models/getVaccinationCenters"
+import users from "./models/getUsers"
+import test_centers from "./models/getTestCenters"
+import mongoose from "mongoose"
 
 export class Server {
     constructor(readonly port: number) {
@@ -30,21 +29,6 @@ export class Server {
         })
 
         //Du5xXZncyC9acs8k
-        app.post("/posts", (req: Request, res: Response) => {
-            const post: IPost = new Post({
-                title: req.body.title,
-                content: req.body.content
-            })
-            post.save()
-            res.status(201).json({message: "Bien ouej"})
-        })
-
-        app.get("/posts", (req: Request, res: Response) => {
-            Post.find().then(posts => {
-                res.status(200).json(posts)
-            })
-        })
-
         app.get('/getVaccinationCenters', (req: Request, res: Response) => {
             vaccination_centers.find().then(posts => {
                 res.status(200).json(posts)
