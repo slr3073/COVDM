@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core"
 import {HttpClient} from "@angular/common/http"
-import {Observable, Subject} from "rxjs"
+import {BehaviorSubject, Observable, Subject} from "rxjs"
 import {TestCenter} from "./models/testcenters.model"
 import {GetTestCenterResponse} from "./models/http/GET-testcenter.model"
 
@@ -38,6 +38,8 @@ export class TestCenterService {
                 this._testCenters = [...tmp]
                 this._testCentersUpdated
                     .next(this._testCenters)
+                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
+                this._testCentersUpdated = new Subject<any>()
             })
     }
 

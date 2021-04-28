@@ -1,8 +1,8 @@
-import {OnDestroy, OnInit, Component} from "@angular/core"
+import {Component, OnDestroy, OnInit} from "@angular/core"
 
 // Imports des librairies de leaflet.
 import * as L from "leaflet"
-import {Browser, icon, LatLng, LeafletEvent, Marker} from "leaflet"
+import {icon, LatLng, Marker} from "leaflet"
 import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"
 import * as L1 from "leaflet.markercluster"
 
@@ -13,16 +13,11 @@ import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 
 // Import des services.
-import {User} from "../models/user.model"
-import {UserService} from "../user.service"
 import {Subscription} from "rxjs"
 import {TestCenter} from "../models/testcenters.model"
 import {TestCenterService} from "../testcenters.service"
 import {VaccinationCenter} from "../models/vaccinationcenter.model"
 import {VaccinationCenterService} from "../vaccination.service"
-import {CustomMarker} from "./CustomMarker"
-import win = Browser.win
-import {animate} from "@angular/animations"
 
 // Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = "assets/marker-icon-2x.png"
@@ -66,6 +61,9 @@ export class MapComponent implements OnInit, OnDestroy {
     private map
     latlng: LatLng = new LatLng(0, 0)
     hasAllowedGeolocation: boolean = false
+    markersVaccineCluster = new L1.MarkerClusterGroup()
+    markersTestCCluster = new L1.MarkerClusterGroup()
+
 
     testCenters: TestCenter[] = []
     vaccinationCenters: VaccinationCenter[] = []
@@ -138,23 +136,21 @@ export class MapComponent implements OnInit, OnDestroy {
         //         const clickedMarker: L.Marker = <L.Marker><unknown>event.target
         //         console.log(clickedMarker)
         //     })
-        const vc = new (L.marker as any)({
+        return new (L.marker as any)({
                 lat: vaccinationCenter.lat_coor1,
                 lng: vaccinationCenter.long_coor1
             },
             {icon: vaccineIcon})
             .bindPopup(vaccinationCenter.nom)
-        return vc
     }
 
     addTestCenter(testCenter: TestCenter): any {
-        const tc = new (L.marker as any)({
+        return new (L.marker as any)({
                 lat: testCenter.latitude,
                 lng: testCenter.longitude
             },
             {icon: testCenterIcon})
             .bindPopup(testCenter.adresse)
-        return tc
     }
 
     ngOnInit(): void {
@@ -177,27 +173,24 @@ export class MapComponent implements OnInit, OnDestroy {
             .catch(err => console.warn(err.message))
         this.vaccinationCenterService.fetchVaccinationCenters()
         this._vaccinationCenterSub = this.vaccinationCenterService.vaccinationCentersObservable.subscribe((vaccinationCenters: VaccinationCenter[]) => {
-            this.vaccinationCenters = vaccinationCenters
 
-            let markersVaccineCluster = new L1.MarkerClusterGroup()
+            this.vaccinationCenters = vaccinationCenters
 
             for (let i = 0; i < this.vaccinationCenters.length; i++) {
                 const vc = this.addVaccinationCenter(this.vaccinationCenters[i])
-                markersVaccineCluster.addLayer(vc)
+                this.markersVaccineCluster.addLayer(vc)
             }
-            this.map.addLayer(markersVaccineCluster)
+            this.map.addLayer(this.markersVaccineCluster)
         })
 
         this.testCenterService.fetchTestCenters()
         this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {
             this.testCenters = testCenters
-            let markersTestCCluster = new L1.MarkerClusterGroup()
-
-            for (let i = 0; i < this.testCenters.length; i++) {
-                const tc = this.addTestCenter(this.testCenters[i])
-                markersTestCCluster.addLayer(tc)
+            for (let j = 0; j < this.testCenters.length; j++) {
+                const tc: TestCenter = this.addTestCenter(this.testCenters[j])
+                this.markersTestCCluster.addLayer(tc)
             }
-            this.map.addLayer(markersTestCCluster)
+            this.map.addLayer(this.markersTestCCluster)
         })
     }
 
@@ -206,12 +199,22 @@ export class MapComponent implements OnInit, OnDestroy {
         this._vaccinationCenterSub.unsubscribe()
     }
 
-    goBackToLocation() {
-        if(this.hasAllowedGeolocation){
+    goBackToLocation(): void {
+        if (this.hasAllowedGeolocation) {
             this.map.flyTo(this.latlng, 10, {
                 animate: true,
                 duration: 1.5
             })
         }
+    }
+
+    toggleVaccinationCenters(): void {
+        const vaccCentersCB = <HTMLInputElement>document.getElementById("checkboxVaccinationCenters")
+        vaccCentersCB.checked ? this.map.addLayer(this.markersVaccineCluster) : this.map.removeLayer(this.markersVaccineCluster)
+    }
+
+    toggleTestCenters(): void {
+        const testCentersCB = <HTMLInputElement>document.getElementById("checkboxTestCenters")
+        testCentersCB.checked ? this.map.addLayer(this.markersTestCCluster) : this.map.removeLayer(this.markersTestCCluster)
     }
 }

@@ -26,6 +26,8 @@ export class UserService {
                 this._users = [...tmp]
                 this._usersUpdated
                     .next(this._users)
+                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
+                this._usersUpdated = new Subject<any>()
             })
     }
 

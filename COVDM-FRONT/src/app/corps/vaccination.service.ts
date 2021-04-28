@@ -53,6 +53,8 @@ export class VaccinationCenterService {
                 this._vaccinationCenters = [...tmp]
                 this._vaccinationCentersUpdated
                     .next(this._vaccinationCenters)
+                // Workaround pour que le subscribe ne soit pas appelé 2 fois.
+                this._vaccinationCentersUpdated = new Subject<any>()
             })
     }
 
