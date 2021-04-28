@@ -22,6 +22,7 @@ export class TestCenterService {
                 for (const testCenter of data) {
                     const tempis: TestCenter = {
                         _id: testCenter._id,
+                        rs: testCenter.rs,
                         adresse: testCenter.adresse,
                         check_rdv: testCenter.check_rdv,
                         do_antigenic: testCenter.do_antigenic,

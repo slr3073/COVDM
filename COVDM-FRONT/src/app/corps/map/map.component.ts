@@ -33,7 +33,9 @@ const iconDefault = icon({
     tooltipAnchor: [16, -28],
     shadowSize: [41, 41]
 })
-Marker.prototype.options.icon = iconDefault// Marker du vaccin
+Marker.prototype.options.icon = iconDefault
+
+// Marker du vaccin
 let vaccineIcon = new (L.icon as any)({
     "iconUrl": "../../../assets/vaccineMarker.png",
     iconSize: [75, 75],
@@ -50,7 +52,6 @@ let testCenterIcon = new (L.icon as any)({
     tooltipAnchor: [16, -28],
 })
 
-
 @Component({
     selector: "app-map",
     templateUrl: "./map.component.html",
@@ -63,7 +64,6 @@ export class MapComponent implements OnInit, OnDestroy {
     hasAllowedGeolocation: boolean = false
     markersVaccineCluster = new L1.MarkerClusterGroup()
     markersTestCCluster = new L1.MarkerClusterGroup()
-
 
     testCenters: TestCenter[] = []
     vaccinationCenters: VaccinationCenter[] = []
@@ -150,7 +150,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 lng: testCenter.longitude
             },
             {icon: testCenterIcon})
-            .bindPopup(testCenter.adresse)
+            .bindPopup(testCenter.rs)
     }
 
     ngOnInit(): void {

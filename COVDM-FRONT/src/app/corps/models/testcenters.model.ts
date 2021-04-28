@@ -1,5 +1,6 @@
 export interface TestCenter {
     _id: string;
+    rs: string;
     adresse: string;
     do_prel: string;
     do_antigenic: string;
