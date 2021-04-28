@@ -38,7 +38,7 @@ let vaccineIcon = new (L.icon as any)({
     "iconUrl": "../../../assets/vaccineMarker.png",
     iconSize: [75, 75],
     iconAnchor: [0, 0],
-    popupAnchor: [1, -34],
+    popupAnchor: [36, 2],
     tooltipAnchor: [16, -28],
 })
 
@@ -46,7 +46,7 @@ let testCenterIcon = new (L.icon as any)({
     "iconUrl": "../../../assets/testCenterMarker.png",
     iconSize: [75, 75],
     iconAnchor: [0, 0],
-    popupAnchor: [1, -34],
+    popupAnchor: [36, 2],
     tooltipAnchor: [16, -28],
 })
 
