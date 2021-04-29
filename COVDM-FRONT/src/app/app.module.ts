@@ -1,16 +1,18 @@
 import {NgModule} from "@angular/core"
 import {BrowserModule} from "@angular/platform-browser"
-import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatToolbarModule} from "@angular/material/toolbar"
 import {AppRoutingModule} from "./app-routing.module"
 import {AppComponent} from "./app.component"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {MatButtonModule} from "@angular/material/button"
-import {MapComponent} from "./home/map/map.component"
+import {MapComponent} from "./home/elements/map/map.component"
 import {MatExpansionModule} from "@angular/material/expansion"
 import {HttpClientModule} from "@angular/common/http"
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component'
+import {MatCheckboxModule} from "@angular/material/checkbox"
+import {HeaderComponent} from "./header/header.component"
+import {HomeComponent} from "./home/home.component"
+import {MatIconModule} from "@angular/material/icon"
+import {MapOptionComponent} from "./home/elements/map-option/map-option.component"
 
 @NgModule({
     declarations: [
@@ -18,6 +20,7 @@ import { HomeComponent } from './home/home.component'
         MapComponent,
         HeaderComponent,
         HomeComponent,
+        MapOptionComponent,
     ],
     imports: [
         BrowserModule,
@@ -27,7 +30,8 @@ import { HomeComponent } from './home/home.component'
         MatExpansionModule,
         HttpClientModule,
         MatCheckboxModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatIconModule
     ],
     providers: [],
     bootstrap: [AppComponent]
