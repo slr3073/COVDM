@@ -1,9 +1,11 @@
 <div id="home-container">
     <app-map></app-map>
-
     <div id="option-container">
-        <app-map-option></app-map-option>
+        <app-map-option
+            (goToLocalisationClicked)="goToLocalisation()"
+            (vaccCBUpdated)="updateVaccinationMarkers($event)"
+            (testCBUpdated)="updateTestMarkers($event)"
+        ></app-map-option>
     </div>
-
 </div>
 

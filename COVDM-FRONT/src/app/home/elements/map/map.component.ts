@@ -168,7 +168,7 @@ export class MapComponent implements OnInit, OnDestroy {
             this.vaccinationCenters = vaccinationCenters
         })
 
-        this.testCenterService.fetchTestCenters(()=> {
+        this.testCenterService.fetchTestCenters(() => {
             for (let j = 0; j < this.testCenters.length; j++) {
                 const tc: TestCenter = this.addTestCenter(this.testCenters[j])
                 this.markersTestCCluster.addLayer(tc)
@@ -195,13 +195,13 @@ export class MapComponent implements OnInit, OnDestroy {
         }
     }
 
-    toggleVaccinationCenters(): void {
-        const vaccCentersCB = <HTMLInputElement>document.getElementById("checkboxVaccinationCenters")
-        vaccCentersCB.checked ? this.map.addLayer(this.markersVaccineCluster) : this.map.removeLayer(this.markersVaccineCluster)
+    toggleVaccinationCenters(hide): void {
+        if (hide) this.map.addLayer(this.markersVaccineCluster)
+        else this.map.removeLayer(this.markersVaccineCluster)
     }
 
-    toggleTestCenters(): void {
-        const testCentersCB = <HTMLInputElement>document.getElementById("checkboxTestCenters")
-        testCentersCB.checked ? this.map.addLayer(this.markersTestCCluster) : this.map.removeLayer(this.markersTestCCluster)
+    toggleTestCenters(hide): void {
+        if (hide)this.map.addLayer(this.markersTestCCluster)
+        else this.map.removeLayer(this.markersTestCCluster)
     }
 }

@@ -13,6 +13,8 @@ import {HeaderComponent} from "./header/header.component"
 import {HomeComponent} from "./home/home.component"
 import {MatIconModule} from "@angular/material/icon"
 import {MapOptionComponent} from "./home/elements/map-option/map-option.component"
+import {FormsModule} from "@angular/forms"
+import {MatInputModule} from "@angular/material/input"
 
 @NgModule({
     declarations: [
@@ -31,7 +33,9 @@ import {MapOptionComponent} from "./home/elements/map-option/map-option.componen
         HttpClientModule,
         MatCheckboxModule,
         MatToolbarModule,
-        MatIconModule
+        MatIconModule,
+        FormsModule,
+        MatInputModule
     ],
     providers: [],
     bootstrap: [AppComponent]

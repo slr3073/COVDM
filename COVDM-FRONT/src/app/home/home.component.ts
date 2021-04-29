@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ViewChild} from "@angular/core"
+import {MapComponent} from "./elements/map/map.component"
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: "app-home",
+    templateUrl: "./home.component.html",
+    styleUrls: ["./home.component.scss"]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
+    @ViewChild(MapComponent) map: MapComponent
 
-  constructor() { }
+    goToLocalisation() {
+        this.map.goBackToLocation()
+    }
 
-  ngOnInit(): void {
-  }
+    updateVaccinationMarkers(hide: boolean){
+        this.map.toggleVaccinationCenters(hide)
+    }
+
+    updateTestMarkers(hide: boolean){
+        this.map.toggleTestCenters(hide)
+    }
 
 }

@@ -18,7 +18,6 @@ export class VaccinationCenterService {
     fetchVaccinationCenters(callback: () => void): any {
         this.http.get<GetVaccinationCenterResponse[]>("http://localhost:4000/getVaccinationCenters")
             .subscribe((data: GetVaccinationCenterResponse[]) => {
-                console.log("fetch vaccination center")
                 let tmp: VaccinationCenter[] = []
                 for (const vaccinationCenter of data) {
                     const vacCenter: VaccinationCenter = {
