@@ -33,7 +33,6 @@ export class UserService {
     }
 
     getUserByID(id: string): User {
-        console.log("get by id" + id)
         for (const user of this._users)
             if (id == user._id) return user
         return null
