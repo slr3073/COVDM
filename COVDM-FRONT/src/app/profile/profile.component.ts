@@ -1,4 +1,4 @@
-import {Component} from "@angular/core"
+import {Component, OnDestroy, OnInit} from "@angular/core"
 import {User} from "../data/models/user.model"
 import {Subscription} from "rxjs"
 import {ActivatedRoute, Params} from "@angular/router"
@@ -9,7 +9,7 @@ import {UserService} from "../data/user.service"
     templateUrl: "./profile.component.html",
     styleUrls: ["./profile.component.scss"]
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit, OnDestroy{
     private activeRouteSub: Subscription
     user: User = null
     userID: string = ""
@@ -19,10 +19,16 @@ export class ProfileComponent {
 
     ngOnInit(): void {
         this.activeRouteSub = this.route.params.subscribe((params: Params) => {
-            this.userID = params["centerID"]
+            this.userID = params["userID"]
             this.userService.fetchUsers(() => {
                 this.user = this.userService.getUserByID(this.userID)
             })
         })
     }
+
+    ngOnDestroy(): void {
+        this.activeRouteSub.unsubscribe()
+    }
+
+
 }

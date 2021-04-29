@@ -1,1 +1,5 @@
-<p>profile works!</p>
+<div *ngIf="user" id="user-info">
+    <p>{{user.first_name}}</p>
+    <p>{{user.last_name}}</p>
+</div>
+
