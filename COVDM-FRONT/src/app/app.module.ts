@@ -16,7 +16,8 @@ import {MapOptionComponent} from "./home/elements/map-option/map-option.componen
 import {FormsModule} from "@angular/forms"
 import {MatInputModule} from "@angular/material/input"
 import {VaccinationCenterInfoComponent} from "./vaccination-center-info/vaccination-center-info.component"
-import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component"
+import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component";
+import { ProfileComponent } from './profile/profile.component'
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {TestCenterInfoComponent} from "./test-center-info/test-center-info.compo
         MapOptionComponent,
         VaccinationCenterInfoComponent,
         TestCenterInfoComponent,
+        ProfileComponent,
     ],
     imports: [
         BrowserModule,

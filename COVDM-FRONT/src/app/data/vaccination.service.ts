@@ -8,7 +8,7 @@ import {GetVaccinationCenterResponse} from "./models/http/GET-vaccinationcenter.
     providedIn: "root"
 })
 export class VaccinationCenterService {
-
+    private _centersFetched: boolean = false
     private _vaccinationCenters: VaccinationCenter[] = []
     private _vaccinationCentersUpdated: Subject<VaccinationCenter[]> = new Subject<VaccinationCenter[]>()
 
@@ -16,6 +16,7 @@ export class VaccinationCenterService {
     }
 
     fetchVaccinationCenters(callback: () => void): any {
+        if (this._centersFetched) callback()
         this.http.get<GetVaccinationCenterResponse[]>("http://localhost:4000/getVaccinationCenters")
             .subscribe((data: GetVaccinationCenterResponse[]) => {
                 let vaccinationCenters: VaccinationCenter[] = []
@@ -53,7 +54,7 @@ export class VaccinationCenterService {
 
                 this._vaccinationCenters = [...vaccinationCenters]
                 this._vaccinationCentersUpdated.next(this._vaccinationCenters)
-
+                this._centersFetched = true
                 callback()
             })
     }
