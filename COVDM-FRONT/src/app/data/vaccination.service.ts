@@ -18,7 +18,7 @@ export class VaccinationCenterService {
     fetchVaccinationCenters(callback: () => void): any {
         this.http.get<GetVaccinationCenterResponse[]>("http://localhost:4000/getVaccinationCenters")
             .subscribe((data: GetVaccinationCenterResponse[]) => {
-                let tmp: VaccinationCenter[] = []
+                let vaccinationCenters: VaccinationCenter[] = []
                 for (const vaccinationCenter of data) {
                     const vacCenter: VaccinationCenter = {
                         _id: vaccinationCenter._id,
@@ -48,17 +48,25 @@ export class VaccinationCenterService {
                         structure_voie: vaccinationCenter.structure_voie
 
                     }
-                    tmp.push(vacCenter)
+                    vaccinationCenters.push(vacCenter)
                 }
 
-                this._vaccinationCenters = [...tmp]
+                this._vaccinationCenters = [...vaccinationCenters]
                 this._vaccinationCentersUpdated.next(this._vaccinationCenters)
 
                 callback()
             })
     }
 
+    getCenterByID(id: string): VaccinationCenter {
+        for (const center of this._vaccinationCenters)
+            if (id == center._id) return center
+        return null
+    }
+
     get vaccinationCentersObservable(): Observable<VaccinationCenter[]> {
         return this._vaccinationCentersUpdated.asObservable()
     }
+
+
 }

@@ -15,6 +15,8 @@ import {MatIconModule} from "@angular/material/icon"
 import {MapOptionComponent} from "./home/elements/map-option/map-option.component"
 import {FormsModule} from "@angular/forms"
 import {MatInputModule} from "@angular/material/input"
+import {VaccinationCenterInfoComponent} from "./vaccination-center-info/vaccination-center-info.component"
+import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component"
 
 @NgModule({
     declarations: [
@@ -23,6 +25,8 @@ import {MatInputModule} from "@angular/material/input"
         HeaderComponent,
         HomeComponent,
         MapOptionComponent,
+        VaccinationCenterInfoComponent,
+        TestCenterInfoComponent,
     ],
     imports: [
         BrowserModule,

@@ -8,10 +8,10 @@ import "leaflet-geosearch/assets/css/leaflet.css"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 import {Subscription} from "rxjs" // Import des services.
-import {TestCenter} from "../../data/models/testcenters.model"
-import {TestCenterService} from "../../data/testcenters.service"
-import {VaccinationCenter} from "../../data/models/vaccinationcenter.model"
-import {VaccinationCenterService} from "../../data/vaccination.service"
+import {TestCenter} from "../../../data/models/testcenters.model"
+import {TestCenterService} from "../../../data/testcenters.service"
+import {VaccinationCenter} from "../../../data/models/vaccinationcenter.model"
+import {VaccinationCenterService} from "../../../data/vaccination.service"
 
 // Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = "assets/marker-icon-2x.png"

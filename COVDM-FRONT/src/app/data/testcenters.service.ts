@@ -8,7 +8,7 @@ import {GetTestCenterResponse} from "./models/http/GET-testcenter.model"
     providedIn: "root"
 })
 export class TestCenterService {
-
+    private _centersFetched: boolean = false
     private _testCenters: TestCenter[] = []
     private _testCentersUpdated: Subject<TestCenter[]> = new Subject<TestCenter[]>()
 
@@ -16,11 +16,13 @@ export class TestCenterService {
     }
 
     fetchTestCenters(callback: () => void): void {
+        if (this._centersFetched) callback()
+
         this.http.get<GetTestCenterResponse[]>("http://localhost:4000/getTestCenters")
             .subscribe((data: GetTestCenterResponse[]) => {
-                let tmp: TestCenter[] = []
+                let testCenters: TestCenter[] = []
                 for (const testCenter of data) {
-                    const tempis: TestCenter = {
+                    const center: TestCenter = {
                         _id: testCenter._id,
                         rs: testCenter.rs,
                         adresse: testCenter.adresse,
@@ -34,13 +36,20 @@ export class TestCenterService {
                         public: testCenter.public,
                         tel_rdv: testCenter.tel_rdv,
                     }
-                    tmp.push(tempis)
+                    testCenters.push(center)
                 }
-                this._testCenters = [...tmp]
+                this._testCenters = [...testCenters]
                 this._testCentersUpdated.next(this._testCenters)
+                this._centersFetched = true
                 callback()
             })
 
+    }
+
+    getCenterByID(id: string): TestCenter {
+        for (const center of this._testCenters)
+            if (id == center._id) return center
+        return null
     }
 
     get testCenterObservable(): Observable<TestCenter[]> {

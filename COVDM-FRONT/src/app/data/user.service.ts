@@ -19,11 +19,11 @@ export class UserService {
     fetchUsers(callback: () => void): void {
         this.http.get<GetUserResponse[]>("http://localhost:4000/getUsers")
             .subscribe((data: GetUserResponse[]) => {
-                let tmp: User[] = []
+                let users: User[] = []
                 for (const user of data)
-                    tmp.push({first_name: user.first_name, last_name: user.last_name})
+                    users.push({first_name: user.first_name, last_name: user.last_name})
 
-                this._users = [...tmp]
+                this._users = [...users]
                 this._usersUpdated.next(this._users)
                 callback()
             })
