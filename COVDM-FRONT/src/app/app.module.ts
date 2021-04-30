@@ -18,6 +18,7 @@ import {MatInputModule} from "@angular/material/input"
 import {VaccinationCenterInfoComponent} from "./vaccination-center-info/vaccination-center-info.component"
 import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component";
 import { ProfileComponent } from './profile/profile.component'
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { ProfileComponent } from './profile/profile.component'
         MatToolbarModule,
         MatIconModule,
         FormsModule,
-        MatInputModule
+        MatInputModule,
+        MatCardModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
