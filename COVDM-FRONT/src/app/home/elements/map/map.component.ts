@@ -52,7 +52,6 @@ let testCenterIcon = new (L.icon as any)({
     styleUrls: ["./map.component.scss"]
 })
 export class MapComponent implements OnInit, OnDestroy {
-
     private map
     latlng: LatLng = new LatLng(0, 0)
     hasAllowedGeolocation: boolean = false
@@ -83,15 +82,11 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     private getGeolocation(): Promise<any> {
-        // TSLint rale à cause du "shadow-name" de resolve mais ça marche, osef.
         return new Promise((resolve, reject) => {
             navigator.geolocation.watchPosition(
-                position => {
-                    resolve({lat: position.coords.latitude, lng: position.coords.longitude})
-                },
-                err => {
-                    reject(err)
-                })
+                position => resolve({lat: position.coords.latitude, lng: position.coords.longitude}),
+                err => reject(err)
+            )
         })
     }
 
@@ -109,19 +104,19 @@ export class MapComponent implements OnInit, OnDestroy {
         this.map.addControl(searchControl)
     }
 
-    addVaccinationCenter(vaccinationCenter: VaccinationCenter): any {
+    getVaccinationCenterMarker(vaccinationCenter: VaccinationCenter): any {
         let numaddr = vaccinationCenter.adr_num ?? ""
         return new (L.marker as any)({
-                lat: vaccinationCenter.lat_coor1,
-                lng: vaccinationCenter.long_coor1
-            },
-            {icon: vaccineIcon})
+            lat: vaccinationCenter.lat_coor1,
+            lng: vaccinationCenter.long_coor1
+        }, {icon: vaccineIcon})
             .bindPopup(
                 "<b>Nom : </b>" + vaccinationCenter.nom + "<br>" +
                 "<b>Adresse : </b>" + numaddr + " " + vaccinationCenter.adr_voie + "<br>" +
                 "<b>Ville : </b>" + vaccinationCenter.com_cp + " " + vaccinationCenter.com_nom + "<br>" +
-                "<b>Tel : </b>" + vaccinationCenter.rdv_tel
+                "<b>Tel : </b>" + vaccinationCenter.rdv_tel + "<br>"
             )
+
     }
 
     addTestCenter(testCenter: TestCenter): any {
@@ -145,7 +140,6 @@ export class MapComponent implements OnInit, OnDestroy {
         this.initGeocoder()
         this.getGeolocation().then(pos => {
             this.hasAllowedGeolocation = true
-
             this.latlng = new LatLng(pos.lat, pos.lng)
 
             L.marker(this.latlng).addTo(this.map).bindPopup("Vous êtes ici.")
@@ -158,7 +152,7 @@ export class MapComponent implements OnInit, OnDestroy {
         }).catch(err => console.warn(err.message))
         this.vaccinationCenterService.fetchVaccinationCenters(() => {
             for (let i = 0; i < this.vaccinationCenters.length; i++) {
-                const vc = this.addVaccinationCenter(this.vaccinationCenters[i])
+                const vc = this.getVaccinationCenterMarker(this.vaccinationCenters[i])
                 this.markersVaccineCluster.addLayer(vc)
             }
             this.map.addLayer(this.markersVaccineCluster)
@@ -170,12 +164,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.testCenterService.fetchTestCenters(() => {
             for (let j = 0; j < this.testCenters.length; j++) {
-                const tc: TestCenter = this.addTestCenter(this.testCenters[j])
+                const tc: any = this.addTestCenter(this.testCenters[j])
                 this.markersTestCCluster.addLayer(tc)
             }
             this.map.addLayer(this.markersTestCCluster)
         })
-
         this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {
             this.testCenters = testCenters
         })
@@ -187,12 +180,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     goBackToLocation(): void {
-        if (this.hasAllowedGeolocation) {
-            this.map.flyTo(this.latlng, 10, {
-                animate: true,
-                duration: 1.5
-            })
-        }
+        if (!this.hasAllowedGeolocation) return
+        this.map.flyTo(this.latlng, 10, {animate: true, duration: 1.5})
     }
 
     toggleVaccinationCenters(hide): void {
@@ -201,7 +190,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     toggleTestCenters(hide): void {
-        if (hide)this.map.addLayer(this.markersTestCCluster)
+        if (hide) this.map.addLayer(this.markersTestCCluster)
         else this.map.removeLayer(this.markersTestCCluster)
     }
 }
