@@ -12,6 +12,7 @@ import {TestCenter} from "../../../data/models/testcenters.model"
 import {TestCenterService} from "../../../data/testcenters.service"
 import {VaccinationCenter} from "../../../data/models/vaccinationcenter.model"
 import {VaccinationCenterService} from "../../../data/vaccination.service"
+import {GlobalLatLngService} from "../../../data/shared.service.ts.service"
 
 // Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = "assets/marker-icon-2x.png"
@@ -35,7 +36,7 @@ let vaccineIcon = new (L.icon as any)({
     iconSize: [75, 75],
     iconAnchor: [0, 0],
     popupAnchor: [36, 2],
-    tooltipAnchor: [16, -28],
+    tooltipAnchor: [-5, -3],
 })
 
 let testCenterIcon = new (L.icon as any)({
@@ -43,17 +44,17 @@ let testCenterIcon = new (L.icon as any)({
     iconSize: [75, 75],
     iconAnchor: [0, 0],
     popupAnchor: [36, 2],
-    tooltipAnchor: [16, -28],
+    tooltipAnchor: [-5, -3],
 })
 
 @Component({
     selector: "app-map",
     templateUrl: "./map.component.html",
-    styleUrls: ["./map.component.scss"]
+    styleUrls: ["./map.component.scss"],
+    providers: [GlobalLatLngService]
 })
 export class MapComponent implements OnInit, OnDestroy {
     private map
-    latlng: LatLng = new LatLng(0, 0)
     hasAllowedGeolocation: boolean = false
     markersVaccineCluster = new L1.MarkerClusterGroup()
     markersTestCCluster = new L1.MarkerClusterGroup()
@@ -63,13 +64,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
     private _testCenterSub: Subscription = new Subscription()
     private _vaccinationCenterSub: Subscription = new Subscription()
+    private _u_latlngSub: Subscription = new Subscription()
 
-    constructor(public testCenterService: TestCenterService, public vaccinationCenterService: VaccinationCenterService) {
+    constructor(public testCenterService: TestCenterService, public vaccinationCenterService: VaccinationCenterService, public u_latlng: GlobalLatLngService) {
     }
 
     private initMap(): void {
         this.map = L.map("map", {
-            // coords du Frankistan.
+            // coords de la France.
             center: [46.7111, 1.7191],
             zoom: 5
         })
@@ -81,13 +83,23 @@ export class MapComponent implements OnInit, OnDestroy {
 
     }
 
-    private getGeolocation(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            navigator.geolocation.watchPosition(
-                position => resolve({lat: position.coords.latitude, lng: position.coords.longitude}),
-                err => reject(err)
-            )
-        })
+    private getGeolocation(): void {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                this.hasAllowedGeolocation = true
+                this.u_latlng.u_lat = position.coords.latitude
+                this.u_latlng.u_lng = position.coords.longitude
+
+                const latlng = new LatLng(this.u_latlng.u_lat, this.u_latlng.u_lng)
+
+                L.marker(latlng).addTo(this.map).bindPopup("Vous êtes ici.")
+
+                L.circle(latlng, {radius: 10000}).addTo(this.map)
+                this.map.flyTo(latlng, 10, {animate: true, duration: 1.5})
+            })
+        } else {
+            console.error("L'utilisateur a décliné la géolocalisation.")
+        }
     }
 
     private initGeocoder(): void {
@@ -138,18 +150,8 @@ export class MapComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initMap()
         this.initGeocoder()
-        this.getGeolocation().then(pos => {
-            this.hasAllowedGeolocation = true
-            this.latlng = new LatLng(pos.lat, pos.lng)
+        this.getGeolocation()
 
-            L.marker(this.latlng).addTo(this.map).bindPopup("Vous êtes ici.")
-
-            L.circle(this.latlng, {radius: 10000}).addTo(this.map)
-            this.map.flyTo(this.latlng, 10, {
-                animate: true,
-                duration: 1.5
-            })
-        }).catch(err => console.warn(err.message))
         this.vaccinationCenterService.fetchVaccinationCenters(() => {
             for (let i = 0; i < this.vaccinationCenters.length; i++) {
                 const vc = this.getVaccinationCenterMarker(this.vaccinationCenters[i])
@@ -172,16 +174,23 @@ export class MapComponent implements OnInit, OnDestroy {
         this._testCenterSub = this.testCenterService.testCenterObservable.subscribe((testCenters: TestCenter[]) => {
             this.testCenters = testCenters
         })
+
     }
 
     ngOnDestroy(): void {
         this._testCenterSub.unsubscribe()
         this._vaccinationCenterSub.unsubscribe()
+        this._u_latlngSub.unsubscribe()
     }
 
     goBackToLocation(): void {
-        if (!this.hasAllowedGeolocation) return
-        this.map.flyTo(this.latlng, 10, {animate: true, duration: 1.5})
+        if (!this.hasAllowedGeolocation) {
+            this.map.flyTo({lat: this.u_latlng.u_lat, lng: this.u_latlng.u_lng}, 10, {animate: true, duration: 1.5})
+        }
+    }
+
+    goToLocation(lat: number, lng: number): void {
+        this.map.flyTo({lat: lat, lng: lng}, 10, {animate: true, duration: 1.5})
     }
 
     toggleVaccinationCenters(hide): void {
