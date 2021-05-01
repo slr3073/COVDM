@@ -1,25 +1,32 @@
-<mat-card *ngIf="user" id="user-info">
-    <mat-card-header>
-        <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
-        <mat-card-subtitle>Les sciences sociales !</mat-card-subtitle>
-        <img mat-card-avatar alt="unable to load" src="https://www.humanite.fr/sites/default/files/images/68016.HR.jpg">
-    </mat-card-header>
-    <mat-card-actions>
-        <button mat-raised-button color="primary">MODIFIER</button>
-        <button mat-raised-button color="warn">DECONNEXION</button>
-    </mat-card-actions>
-    <mat-accordion multi="true" *ngIf="avis.length > 0">
-    <mat-expansion-panel hideToggle *ngFor="let avis of avis">
-        <mat-expansion-panel-header>
-            {{avis.title}}
-        </mat-expansion-panel-header>
-        <p>{{avis.content}}</p>
-        <mat-action-row>
-            <button mat-button color="primary">Y ALLER</button>
-        </mat-action-row>
-    </mat-expansion-panel>
-</mat-accordion>
-<p class="info-text mat-body-1" *ngIf="avis.length == 0">Vous n'avez pas encore laissé d'avis</p>
-</mat-card>
+<div *ngIf="!isLoading">
+    <mat-card *ngIf="!isLoading" id="user-info">
+        <mat-card-header>
+            <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
+            <mat-card-subtitle>Les sciences sociales !</mat-card-subtitle>
+            <img mat-card-avatar alt="unable to load"
+                 src="https://www.humanite.fr/sites/default/files/images/68016.HR.jpg">
+        </mat-card-header>
+        <mat-card-actions>
+            <button mat-raised-button color="primary">MODIFIER</button>
+            <button mat-raised-button color="warn">DECONNEXION</button>
+        </mat-card-actions>
+        <mat-accordion multi="true" *ngIf="avis.length > 0">
+            <mat-expansion-panel hideToggle *ngFor="let avis of avis">
+                <mat-expansion-panel-header>
+                    {{avis.title}}
+                </mat-expansion-panel-header>
+                <p>{{avis.content}}</p>
+                <mat-action-row>
+                    <button mat-button color="primary">Y ALLER</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <p class="info-text mat-body-1" *ngIf="avis.length == 0">Vous n'avez pas encore laissé d'avis</p>
+    </mat-card>
+</div>
+<div *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+
 
 

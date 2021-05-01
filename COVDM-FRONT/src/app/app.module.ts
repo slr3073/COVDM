@@ -16,9 +16,10 @@ import {MapOptionComponent} from "./home/elements/map-option/map-option.componen
 import {FormsModule} from "@angular/forms"
 import {MatInputModule} from "@angular/material/input"
 import {VaccinationCenterInfoComponent} from "./vaccination-center-info/vaccination-center-info.component"
-import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component";
-import { ProfileComponent } from './profile/profile.component'
-import {MatCardModule} from '@angular/material/card';
+import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component"
+import {ProfileComponent} from "./profile/profile.component"
+import {MatCardModule} from "@angular/material/card"
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner"
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import {MatCardModule} from '@angular/material/card';
         FormsModule,
         MatInputModule,
         MatCardModule,
+        MatProgressSpinnerModule
     ],
     providers: [],
     bootstrap: [AppComponent]

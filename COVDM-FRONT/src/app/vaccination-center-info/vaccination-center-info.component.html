@@ -1,1 +1,4 @@
-<p *ngIf="center">{{center.adr_voie}}</p>
+<div *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+<div *ngIf="!isLoading"><p *ngIf="center">{{center.adr_voie}}</p></div>
+
+

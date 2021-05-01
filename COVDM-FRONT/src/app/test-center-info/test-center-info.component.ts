@@ -10,6 +10,7 @@ import {TestCenterService} from "../data/testcenters.service"
     styleUrls: ["./test-center-info.component.scss"]
 })
 export class TestCenterInfoComponent implements OnInit, OnDestroy {
+    isLoading: boolean = true
     private activeRouteSub: Subscription
     center: TestCenter = null
     centerId: string
@@ -22,6 +23,7 @@ export class TestCenterInfoComponent implements OnInit, OnDestroy {
             this.centerId = params["centerID"]
             this.testCenterService.fetchTestCenters(() => {
                 this.center = this.testCenterService.getCenterByID(this.centerId)
+                this.isLoading = false
             })
         })
     }

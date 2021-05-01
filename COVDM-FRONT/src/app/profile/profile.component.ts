@@ -12,6 +12,7 @@ import {Avis} from "../data/models/avis.model"
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     private activeRouteSub: Subscription
+    isLoading: boolean = true
     user: User = null
     userID: string = ""
     avis: Avis[] = [
@@ -45,6 +46,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.userID = params["userID"]
             this.userService.fetchUsers(() => {
                 this.user = this.userService.getUserByID(this.userID)
+                this.isLoading = false
             })
         })
     }
@@ -52,6 +54,4 @@ export class ProfileComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.activeRouteSub.unsubscribe()
     }
-
-
 }

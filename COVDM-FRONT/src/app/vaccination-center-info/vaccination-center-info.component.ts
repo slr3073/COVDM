@@ -13,6 +13,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
     centerId: string
+    isLoading: boolean = true
 
     constructor(private route: ActivatedRoute, public vaccinationCenterService: VaccinationCenterService) {
     }
@@ -22,6 +23,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
             this.centerId = params["centerID"]
             this.vaccinationCenterService.fetchVaccinationCenters(() => {
                 this.center = this.vaccinationCenterService.getCenterByID(this.centerId)
+                this.isLoading = false
             })
         })
     }
