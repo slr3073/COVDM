@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, {Schema, Document} from "mongoose"
 
 export interface User extends Document {
     _id: object,
@@ -12,4 +12,4 @@ const getUserSchema: Schema = new Schema({
     last_name: {type: String}
 })
 
-export default mongoose.model<User>('users', getUserSchema);
+export default mongoose.model<User>("users", getUserSchema, "users")

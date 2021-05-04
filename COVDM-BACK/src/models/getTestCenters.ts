@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, {Schema, Document} from "mongoose"
 
 export interface TestCenter extends Document {
     _id: object,
@@ -38,4 +38,4 @@ const getTestCentersSchema: Schema = new Schema({
     date_modif: {type: Object}
 })
 
-export default mongoose.model<TestCenter>('test_centers', getTestCentersSchema)
+export default mongoose.model<TestCenter>("test_centers", getTestCentersSchema, "test_centers")
