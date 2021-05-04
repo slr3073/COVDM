@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
+import {ActivatedRoute, Router} from "@angular/router"
 import * as L from "leaflet"// Imports des librairies de leaflet.
 import {icon, LatLng, Marker} from "leaflet"
 import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"
@@ -67,7 +68,11 @@ export class MapComponent implements OnInit, OnDestroy {
     private _vaccinationCenterSub: Subscription = new Subscription()
     private _u_latlngSub: Subscription = new Subscription()
 
-    constructor(public testCenterService: TestCenterService, public vaccinationCenterService: VaccinationCenterService, public u_latlng: GlobalLatLngService) {
+    constructor(public testCenterService: TestCenterService,
+                public vaccinationCenterService: VaccinationCenterService,
+                public u_latlng: GlobalLatLngService,
+                private router: Router,
+                private route: ActivatedRoute) {
     }
 
     private initMap(): void {
@@ -128,8 +133,15 @@ export class MapComponent implements OnInit, OnDestroy {
                 "<b>Adresse : </b>" + numaddr + " " + vaccinationCenter.adr_voie + "<br>" +
                 "<b>Ville : </b>" + vaccinationCenter.com_cp + " " + vaccinationCenter.com_nom + "<br>" +
                 "<b>Tel : </b>" + vaccinationCenter.rdv_tel + "<br>"
-            ).on("mouseover", (ev) => {ev.target.openPopup()})
-            .on("mouseout", (ev) => {ev.target.closePopup()})
+            ).on("mouseover", (ev) => {
+                ev.target.openPopup()
+            })
+            .on("mouseout", (ev) => {
+                ev.target.closePopup()
+            })
+            .on("click", () => {
+                this.router.navigate(['/vaccinationCenter/' + vaccinationCenter._id])
+            })
     }
 
     getTestCenter(testCenter: TestCenter): any {
@@ -145,8 +157,15 @@ export class MapComponent implements OnInit, OnDestroy {
                 "<b>Prendre RDV : </b>" + testCenter.tel_rdv + "<br>" +
                 "<b>Horaires : </b>" + horaire + "<br>" +
                 "<b>Mode prélèvement : </b>" + testCenter.mod_prel
-            ).on("mouseover", (ev) => {ev.target.openPopup()})
-            .on("mouseout", (ev) => {ev.target.closePopup()})
+            ).on("mouseover", (ev) => {
+                ev.target.openPopup()
+            })
+            .on("mouseout", (ev) => {
+                ev.target.closePopup()
+            })
+            .on("click", () => {
+                this.router.navigate(['/testCenter/' + testCenter._id])
+            })
     }
 
     ngOnInit(): void {
