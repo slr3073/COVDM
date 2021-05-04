@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, {Schema, Document} from "mongoose"
 
 export interface VaccinationCenter extends Document {
     _id: object,
@@ -75,4 +75,4 @@ const getVaccinationCentersSchema: Schema = new Schema({
     rdv_consultation_prevaccination: {type: String}
 })
 
-export default mongoose.model<VaccinationCenter>('vaccination_centers', getVaccinationCentersSchema)
+export default mongoose.model<VaccinationCenter>("vaccination_centers", getVaccinationCentersSchema, "vaccination_centers")

@@ -2,14 +2,15 @@
     <mat-card *ngIf="!isLoading" id="user-info">
         <mat-card-header>
             <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
-            <mat-card-subtitle>Les sciences sociales !</mat-card-subtitle>
             <img mat-card-avatar alt="unable to load"
                  src="https://www.humanite.fr/sites/default/files/images/68016.HR.jpg">
+            <div class="spacer"></div>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary">MODIFIER</button>
+                <button mat-raised-button color="warn">DECONNEXION</button>
+            </mat-card-actions>
         </mat-card-header>
-        <mat-card-actions>
-            <button mat-raised-button color="primary">MODIFIER</button>
-            <button mat-raised-button color="warn">DECONNEXION</button>
-        </mat-card-actions>
+
         <mat-accordion multi="true" *ngIf="avis.length > 0">
             <mat-expansion-panel hideToggle *ngFor="let avis of avis">
                 <mat-expansion-panel-header>
