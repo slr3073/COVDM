@@ -1,4 +1,43 @@
 <div *ngIf="isLoading"><mat-spinner></mat-spinner></div>
-<div *ngIf="!isLoading"><p *ngIf="center">{{center.adr_voie}}</p></div>
+
+<div *ngIf="!isLoading">
+    <h1 class="titre"> Centre de vaccination </h1>
+
+    <div class ="info">
+        <h2 *ngIf="center"> {{center.nom}} </h2>
+        <h3 *ngIf="center">
+            {{center.adr_num}} {{center.adr_voie}} <br>
+            {{center.com_cp}}  {{center.com_nom}}  <br>
+
+            liste des horaires
+            <table mat-table>
+                <tr>
+                    <td> Lundi </td>
+                    <td> Mardi </td>
+                    <td> Mercredi </td>
+                    <td> Jeudi </td>
+                    <td> Vendredi </td>
+                    <td> Samedi </td>
+                    <td> Dimanche </td>
+                </tr>
+                <tr>
+                    <td>{{center.rdv_lundi}}</td>
+                    <td>{{center.rdv_mardi}}</td>
+                    <td>{{center.rdv_mercredi}}</td>
+                    <td>{{center.rdv_jeudi}}</td>
+                    <td>{{center.rdv_vendredi}}</td>
+                    <td>{{center.rdv_samedi}}</td>
+                    <td>{{center.rdv_dimanche}}</td>
+                </tr>
+            </table>
+            <br>
+             <mat-icon> phone </mat-icon>: {{center.rdv_tel}} <br>
+            <a href="{{center.rdv_site_web}}">  <mat-icon> open_in_new </mat-icon>  </a>
+        </h3>
+    </div>
+
+
+
+</div>
 
 
