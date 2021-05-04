@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
+import {ActivatedRoute, Router} from "@angular/router"
 import * as L from "leaflet"// Imports des librairies de leaflet.
 import {icon, LatLng, Marker} from "leaflet"
 import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"
@@ -32,7 +33,8 @@ Marker.prototype.options.icon = iconDefault
 
 // Marker du vaccin
 let vaccineIcon = new (L.icon as any)({
-    "iconUrl": "../../../assets/vaccineMarker.png",
+    iconUrl: "../../../assets/vaccineMarker.png",
+    shadowAnchor: [0, 0],
     iconSize: [75, 75],
     iconAnchor: [0, 0],
     popupAnchor: [36, 2],
@@ -40,7 +42,7 @@ let vaccineIcon = new (L.icon as any)({
 })
 
 let testCenterIcon = new (L.icon as any)({
-    "iconUrl": "../../../assets/testCenterMarker.png",
+    iconUrl: "../../../assets/testCenterMarker.png",
     iconSize: [75, 75],
     iconAnchor: [0, 0],
     popupAnchor: [36, 2],
@@ -66,7 +68,11 @@ export class MapComponent implements OnInit, OnDestroy {
     private _vaccinationCenterSub: Subscription = new Subscription()
     private _u_latlngSub: Subscription = new Subscription()
 
-    constructor(public testCenterService: TestCenterService, public vaccinationCenterService: VaccinationCenterService, public u_latlng: GlobalLatLngService) {
+    constructor(public testCenterService: TestCenterService,
+                public vaccinationCenterService: VaccinationCenterService,
+                public u_latlng: GlobalLatLngService,
+                private router: Router,
+                private route: ActivatedRoute) {
     }
 
     private initMap(): void {
@@ -127,11 +133,18 @@ export class MapComponent implements OnInit, OnDestroy {
                 "<b>Adresse : </b>" + numaddr + " " + vaccinationCenter.adr_voie + "<br>" +
                 "<b>Ville : </b>" + vaccinationCenter.com_cp + " " + vaccinationCenter.com_nom + "<br>" +
                 "<b>Tel : </b>" + vaccinationCenter.rdv_tel + "<br>"
-            )
-
+            ).on("mouseover", (ev) => {
+                ev.target.openPopup()
+            })
+            .on("mouseout", (ev) => {
+                ev.target.closePopup()
+            })
+            .on("click", () => {
+                this.router.navigate(['/vaccinationCenter/' + vaccinationCenter._id])
+            })
     }
 
-    addTestCenter(testCenter: TestCenter): any {
+    getTestCenter(testCenter: TestCenter): any {
         let horaire = testCenter.horaire || "<strong>HORAIRES INDISPONIBLES.</strong>"
         return new (L.marker as any)({
                 lat: testCenter.latitude,
@@ -144,7 +157,15 @@ export class MapComponent implements OnInit, OnDestroy {
                 "<b>Prendre RDV : </b>" + testCenter.tel_rdv + "<br>" +
                 "<b>Horaires : </b>" + horaire + "<br>" +
                 "<b>Mode prélèvement : </b>" + testCenter.mod_prel
-            )
+            ).on("mouseover", (ev) => {
+                ev.target.openPopup()
+            })
+            .on("mouseout", (ev) => {
+                ev.target.closePopup()
+            })
+            .on("click", () => {
+                this.router.navigate(['/testCenter/' + testCenter._id])
+            })
     }
 
     ngOnInit(): void {
@@ -166,7 +187,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.testCenterService.fetchTestCenters(() => {
             for (let j = 0; j < this.testCenters.length; j++) {
-                const tc: any = this.addTestCenter(this.testCenters[j])
+                const tc: any = this.getTestCenter(this.testCenters[j])
                 this.markersTestCCluster.addLayer(tc)
             }
             this.map.addLayer(this.markersTestCCluster)
