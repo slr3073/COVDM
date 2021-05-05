@@ -1,4 +1,4 @@
-export interface Avis {
+export interface GetAvisResponse {
     _id: string
     testCenterID: string
     userID: string

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
-import {ActivatedRoute, Router} from "@angular/router"
+import {Router} from "@angular/router"
 import * as L from "leaflet"// Imports des librairies de leaflet.
 import {icon, LatLng, Marker} from "leaflet"
 import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"
@@ -13,7 +13,7 @@ import {TestCenter} from "../../../data/models/testcenters.model"
 import {TestCenterService} from "../../../data/testcenters.service"
 import {VaccinationCenter} from "../../../data/models/vaccinationcenter.model"
 import {VaccinationCenterService} from "../../../data/vaccination.service"
-import {GlobalLatLngService} from "../../../data/shared.service.ts.service"
+import {GlobalLatLngService} from "../../../data/shared.service"
 
 // Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = "assets/marker-icon-2x.png"
@@ -71,8 +71,7 @@ export class MapComponent implements OnInit, OnDestroy {
     constructor(public testCenterService: TestCenterService,
                 public vaccinationCenterService: VaccinationCenterService,
                 public u_latlng: GlobalLatLngService,
-                private router: Router,
-                private route: ActivatedRoute) {
+                private router: Router) {
     }
 
     private initMap(): void {
@@ -140,7 +139,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 ev.target.closePopup()
             })
             .on("click", () => {
-                this.router.navigate(['/vaccinationCenter/' + vaccinationCenter._id])
+                this.router.navigate(["/vaccinationCenter/" + vaccinationCenter._id])
             })
     }
 
@@ -164,7 +163,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 ev.target.closePopup()
             })
             .on("click", () => {
-                this.router.navigate(['/testCenter/' + testCenter._id])
+                this.router.navigate(["/testCenter/" + testCenter._id])
             })
     }
 

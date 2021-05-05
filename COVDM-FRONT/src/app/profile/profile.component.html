@@ -1,5 +1,5 @@
-<div *ngIf="!isLoading">
-    <mat-card *ngIf="!isLoading" id="user-info">
+<div *ngIf="!isLoadingUser && !isLoadingAvisTest && !isLoadingAvisVacc">
+    <mat-card id="user-info">
         <mat-card-header>
             <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
             <img mat-card-avatar alt="unable to load"
@@ -11,8 +11,8 @@
             </mat-card-actions>
         </mat-card-header>
 
-        <mat-accordion multi="true" *ngIf="avis.length > 0">
-            <mat-expansion-panel hideToggle *ngFor="let avis of avis">
+        <mat-accordion multi="true" *ngIf="avisTest.length > 0">
+            <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
                 <mat-expansion-panel-header>
                     {{avis.title}}
                 </mat-expansion-panel-header>
@@ -22,10 +22,24 @@
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
-        <p class="info-text mat-body-1" *ngIf="avis.length == 0">Vous n'avez pas encore laissé d'avis</p>
+        <p class="info-text mat-body-1" *ngIf="avisTest.length == 0">Vous n'avez pas encore laissé d'avis test</p>
+
+        <mat-accordion multi="true" *ngIf="avisVacc.length > 0">
+            <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
+                <mat-expansion-panel-header>
+                    {{avis.title}}
+                </mat-expansion-panel-header>
+                <p>{{avis.content}}</p>
+                <mat-action-row>
+                    <button mat-button color="primary">Y ALLER</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <p class="info-text mat-body-1" *ngIf="avisVacc.length == 0">Vous n'avez pas encore laissé d'avis vacc</p>
     </mat-card>
 </div>
-<div *ngIf="isLoading">
+
+<div *ngIf="isLoadingUser || isLoadingAvisVacc || isLoadingAvisTest">
     <mat-spinner></mat-spinner>
 </div>
 

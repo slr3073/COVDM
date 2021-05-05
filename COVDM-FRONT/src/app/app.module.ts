@@ -20,6 +20,7 @@ import {TestCenterInfoComponent} from "./test-center-info/test-center-info.compo
 import {ProfileComponent} from "./profile/profile.component"
 import {MatCardModule} from "@angular/material/card"
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner"
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner"
         FormsModule,
         MatInputModule,
         MatCardModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTableModule
     ],
     providers: [],
     bootstrap: [AppComponent]
