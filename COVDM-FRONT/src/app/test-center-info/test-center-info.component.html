@@ -2,5 +2,20 @@
     <mat-spinner></mat-spinner>
 </div>
 
-<div *ngIf="!isLoading"><p *ngIf="center">{{center.adresse}}</p></div>
+<div *ngIf="!isLoading">
+
+    <mat-card id="center-info">
+        <mat-card-header>
+            <mat-card-title>{{center.rs}}</mat-card-title>
+            <mat-card-subtitle>{{center.adresse}}</mat-card-subtitle>
+            <div class="spacer"></div>
+            <mat-card-actions align="end">
+                <button mat-button color="primary">
+                    <mat-label>RENDEZ-VOUS </mat-label>
+                    <mat-icon>open_in_new</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card-header>
+    </mat-card>
+</div>
 

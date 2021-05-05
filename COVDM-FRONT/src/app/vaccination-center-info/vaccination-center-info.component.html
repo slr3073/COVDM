@@ -3,45 +3,75 @@
 </div>
 
 <div *ngIf="!isLoading">
-    <h1 class="titre"> Centre de vaccination </h1>
+    <mat-card id="center-info">
+        <mat-card-header>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star_border</mat-icon>
+            <mat-icon color="accent">star_border</mat-icon>
+            <mat-card-title>
+                <mat-label>{{center.nom}}</mat-label>
+                <mat-label *ngIf="center.rdv_tel">{{" (" + center.rdv_tel + ")"}}</mat-label>
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{center.adr_num + " " + center.adr_voie + ", " + center.com_nom + " (" + center.com_cp + ")"}}
+            </mat-card-subtitle>
+            <div class="spacer"></div>
+            <button mat-button color="primary">
+                RENDEZ-VOUS
+                <mat-icon>open_in_new</mat-icon>
+            </button>
+        </mat-card-header>
 
-    <div class="info">
-        <h2 *ngIf="center"> {{center.nom}} </h2>
-        <h3 *ngIf="center">
-            {{center.adr_num}} {{center.adr_voie}} <br>
-            {{center.com_cp}}  {{center.com_nom}}  <br>
+        <mat-card-content>
+            <mat-list>
+                <mat-divider></mat-divider>
+                <div mat-subheader>Horaires :</div>
+                <table mat-table [dataSource]="horaires" class="mat-elevation-z8">
+                    <ng-container matColumnDef="lundi">
+                        <th mat-header-cell *matHeaderCellDef>LUNDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["lundi"]}} </td>
+                    </ng-container>
 
-            liste des horaires
-            <table mat-table>
-                <tr>
-                    <td> Lundi</td>
-                    <td> Mardi</td>
-                    <td> Mercredi</td>
-                    <td> Jeudi</td>
-                    <td> Vendredi</td>
-                    <td> Samedi</td>
-                    <td> Dimanche</td>
-                </tr>
-                <tr>
-                    <td>{{center.rdv_lundi}}</td>
-                    <td>{{center.rdv_mardi}}</td>
-                    <td>{{center.rdv_mercredi}}</td>
-                    <td>{{center.rdv_jeudi}}</td>
-                    <td>{{center.rdv_vendredi}}</td>
-                    <td>{{center.rdv_samedi}}</td>
-                    <td>{{center.rdv_dimanche}}</td>
-                </tr>
-            </table>
-            <br>
-            <mat-icon> phone</mat-icon>
-            : {{center.rdv_tel}} <br>
-            <a href="{{center.rdv_site_web}}">
-                <mat-icon> open_in_new</mat-icon>
-            </a>
-        </h3>
-    </div>
+                    <ng-container matColumnDef="mardi">
+                        <th mat-header-cell *matHeaderCellDef>MARDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["mardi"]}} </td>
+                    </ng-container>
 
+                    <ng-container matColumnDef="mercredi">
+                        <th mat-header-cell *matHeaderCellDef>MERCREDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["mercredi"]}} </td>
+                    </ng-container>
 
+                    <ng-container matColumnDef="jeudi">
+                        <th mat-header-cell *matHeaderCellDef>JEUDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["jeudi"]}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="vendredi">
+                        <th mat-header-cell *matHeaderCellDef>VENDREDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["vendredi"]}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="samedi">
+                        <th mat-header-cell *matHeaderCellDef>SAMEDI</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["samedi"]}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dimanche">
+                        <th mat-header-cell *matHeaderCellDef>DIMANCHE</th>
+                        <td mat-cell *matCellDef="let jour"> {{jour["dimanche"]}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
 </div>
+
+
 
 

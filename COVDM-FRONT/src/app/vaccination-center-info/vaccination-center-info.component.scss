@@ -1,16 +1,13 @@
-.titre{
-    padding-top : 2%;
-    text-align: center ;
+#center-info{
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
 }
-.info{
-    padding-left:2%;
+
+.spacer {
+  flex: 1 1 auto;
 }
+
 table {
-    border-collapse: collapse;
-    text-align: center;
-    box-shadow : 2px 2px 3px 3px grey;
-}
-table td, table th {
-    width : 100px;
-    border: 1px solid black;
+  width: 100%;
 }

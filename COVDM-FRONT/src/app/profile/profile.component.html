@@ -11,58 +11,72 @@
                 <button mat-raised-button color="warn">DECONNEXION</button>
             </mat-card-actions>
         </mat-card-header>
+        <mat-list>
+            <mat-divider></mat-divider>
+            <div mat-subheader>AVIS CENTRES DE TEST :</div>
+            <mat-accordion multi="true" *ngIf="avisTest.length > 0">
+                <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
+                    <mat-expansion-panel-header>
+                        {{avis.title}}
+                        <div class="spacer"></div>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
 
-        <p>AVIS CENTRES DE TEST :</p>
-        <mat-accordion multi="true" *ngIf="avisTest.length > 0">
-            <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
-                <mat-expansion-panel-header>
-                    {{avis.title}}
-                    <div class="spacer"></div>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
 
-                    <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
+                    </mat-expansion-panel-header>
+                    <p>{{avis.content}}</p>
+                    <mat-action-row>
+                        <button routerLinkActive="true" [routerLink]="'/testCenter/' + avis.testCenterID" mat-button
+                                color="primary">Y ALLER
+                        </button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <div mat-subheader *ngIf="avisTest.length == 0">
+                Vous n'avez pas laissé d'avis sur un centre de test ...
+            </div>
+            <mat-list-item></mat-list-item>
+            <mat-divider></mat-divider>
+            <div mat-subheader>AVIS CENTRES DE VACCINATION :</div>
+            <mat-accordion multi="true" *ngIf="avisVacc.length > 0">
+                <mat-expansion-panel hideToggle *ngFor="let avis of avisVacc">
+                    <mat-expansion-panel-header>
+                        {{avis.title}}
+                        <div class="spacer"></div>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
 
-                </mat-expansion-panel-header>
-                <p>{{avis.content}}</p>
-                <mat-action-row>
-                    <button routerLinkActive="true" [routerLink]="'/testCenter/' + avis.testCenterID" mat-button color="primary">Y ALLER</button>
-                </mat-action-row>
-            </mat-expansion-panel>
-        </mat-accordion>
-        <p *ngIf="avisTest.length == 0">Vous n'avez pas laissé d'avis sur un centre de test ...</p>
+                        <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
+                        <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
 
-        <p>AVIS CENTRES DE VACCINATION :</p>
-        <mat-accordion multi="true" *ngIf="avisVacc.length > 0">
-            <mat-expansion-panel hideToggle *ngFor="let avis of avisVacc">
-                <mat-expansion-panel-header>
-                    {{avis.title}}
-                    <div class="spacer"></div>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
+                    </mat-expansion-panel-header>
+                    <p>{{avis.content}}</p>
+                    <mat-action-row>
+                        <button routerLinkActive="true" [routerLink]="'/vaccinationCenter/' + avis.testCenterID"
+                                mat-button
+                                color="primary">Y ALLER
+                        </button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <div mat-subheader *ngIf="avisTest.length == 0">
+                Vous n'avez pas laissé d'avis sur un centre de vaccination ...
+            </div>
+        </mat-list>
 
-                    <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
-                    <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
 
-                </mat-expansion-panel-header>
-                <p>{{avis.content}}</p>
-                <mat-action-row>
-                    <button routerLinkActive="true" [routerLink]="'/vaccinationCenter/' + avis.testCenterID" mat-button color="primary">Y ALLER</button>
-                </mat-action-row>
-            </mat-expansion-panel>
-        </mat-accordion>
-        <p *ngIf="avisTest.length == 0">Vous n'avez pas laissé d'avis sur un centre de vaccination ...</p>
     </mat-card>
 </div>
 
