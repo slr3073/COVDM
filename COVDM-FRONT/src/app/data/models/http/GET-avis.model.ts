@@ -1,8 +1,8 @@
 export interface GetAvisResponse {
     _id: string
-    testCenterID: string
-    userID: string
-    rating: number
-    title: string
-    content: string
+    center_id: string
+    user_id: string
+    note: number
+    titre: string
+    com: string
 }

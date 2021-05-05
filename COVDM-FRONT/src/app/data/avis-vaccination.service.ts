@@ -26,12 +26,12 @@ export class AvisVaccinationService {
                 let listeAvis: Avis[] = []
                 for (const avis of data)
                     listeAvis.push({
-                        _id: avis._id,
-                        title: avis.title,
-                        content: avis.content,
-                        rating: avis.rating,
-                        userID: avis.userID,
-                        testCenterID: avis.testCenterID
+                        _id: avis["_id"],
+                        title: avis["titre"],
+                        content: avis["com"],
+                        rating: avis["note"],
+                        userID: avis["user_id"],
+                        testCenterID: avis["center_id"]
                     })
 
                 this._avis = [...listeAvis]
@@ -66,6 +66,7 @@ export class AvisVaccinationService {
         }
         for (const avis of this._avis)
             if (avis.userID == id ) result.push(avis)
+
         return result
     }
 }

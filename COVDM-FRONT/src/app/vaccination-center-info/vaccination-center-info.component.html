@@ -1,9 +1,11 @@
-<div *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+<div *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
 
 <div *ngIf="!isLoading">
     <h1 class="titre"> Centre de vaccination </h1>
 
-    <div class ="info">
+    <div class="info">
         <h2 *ngIf="center"> {{center.nom}} </h2>
         <h3 *ngIf="center">
             {{center.adr_num}} {{center.adr_voie}} <br>
@@ -12,13 +14,13 @@
             liste des horaires
             <table mat-table>
                 <tr>
-                    <td> Lundi </td>
-                    <td> Mardi </td>
-                    <td> Mercredi </td>
-                    <td> Jeudi </td>
-                    <td> Vendredi </td>
-                    <td> Samedi </td>
-                    <td> Dimanche </td>
+                    <td> Lundi</td>
+                    <td> Mardi</td>
+                    <td> Mercredi</td>
+                    <td> Jeudi</td>
+                    <td> Vendredi</td>
+                    <td> Samedi</td>
+                    <td> Dimanche</td>
                 </tr>
                 <tr>
                     <td>{{center.rdv_lundi}}</td>
@@ -31,11 +33,13 @@
                 </tr>
             </table>
             <br>
-             <mat-icon> phone </mat-icon>: {{center.rdv_tel}} <br>
-            <a href="{{center.rdv_site_web}}">  <mat-icon> open_in_new </mat-icon>  </a>
+            <mat-icon> phone</mat-icon>
+            : {{center.rdv_tel}} <br>
+            <a href="{{center.rdv_site_web}}">
+                <mat-icon> open_in_new</mat-icon>
+            </a>
         </h3>
     </div>
-
 
 
 </div>

@@ -21,7 +21,7 @@ export class UserService {
             .subscribe((data: GetUserResponse[]) => {
                 let users: User[] = []
                 for (const user of data)
-                    users.push({_id: user._id, first_name: user.first_name, last_name: user.last_name})
+                    users.push({_id: user._id, first_name: user.first_name, last_name: user.last_name, picture: user.picture})
 
                 this._users = [...users]
                 this._usersUpdated.next(this._users)

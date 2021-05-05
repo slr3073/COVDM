@@ -24,49 +24,52 @@ export class AvisTestService {
         this.http.get<GetAvisResponse[]>("http://localhost:4000/getAvisTest")
             .subscribe((data: GetAvisResponse[]) => {
                 let listeAvis: Avis[] = []
-                for (const avis of data)
+                for (const avis of data) {
                     listeAvis.push({
-                        _id: avis._id,
-                        title: avis.title,
-                        content: avis.content,
-                        rating: avis.rating,
-                        userID: avis.userID,
-                        testCenterID: avis.testCenterID
+                        _id: avis["_id"],
+                        title: avis["titre"],
+                        content: avis["com"],
+                        rating: avis["note"],
+                        userID: avis["user_id"],
+                        testCenterID: avis["center_id"]
                     })
+                }
+
 
                 this._avis = [...listeAvis]
                 this._avisUpdated.next(this._avis)
                 this._avisFetched = true
-                console.log(this._avis)
                 callback()
             })
     }
 
-    getAvisByCenterID(id: string ): Avis[] {
+    getAvisByCenterID(id: string): Avis[] {
         let result: Avis[] = []
-        if (!this._avisFetched){
-            this.fetchAvisTest(()=> {
+        if (!this._avisFetched) {
+            this.fetchAvisTest(() => {
                 for (const avis of this._avis)
-                    if (avis.testCenterID == id ) result.push(avis)
+                    if (avis.testCenterID == id) result.push(avis)
                 return result
             })
         }
         for (const avis of this._avis)
-            if (avis.testCenterID == id ) result.push(avis)
+            if (avis.testCenterID == id) result.push(avis)
         return result
     }
 
-     getAvisByUserID(id: string ): Avis[] {
+    getAvisByUserID(id: string): Avis[] {
         let result: Avis[] = []
-        if (!this._avisFetched){
-            this.fetchAvisTest(()=> {
+        if (!this._avisFetched) {
+            this.fetchAvisTest(() => {
                 for (const avis of this._avis)
-                    if (avis.userID == id ) result.push(avis)
+                    if (avis.userID == id) result.push(avis)
                 return result
             })
         }
-        for (const avis of this._avis)
-            if (avis.userID == id ) result.push(avis)
+
+        for (const avis of this._avis) {
+            if (avis.userID == id && avis.title) result.push(avis)
+        }
         return result
     }
 }

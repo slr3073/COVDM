@@ -3,7 +3,7 @@
         <mat-card-header>
             <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
             <img mat-card-avatar alt="unable to load"
-                 src="https://www.humanite.fr/sites/default/files/images/68016.HR.jpg">
+                 [src]="user.picture">
             <div class="spacer"></div>
             <mat-card-actions align="end">
                 <button mat-raised-button color="primary">MODIFIER</button>
@@ -11,31 +11,57 @@
             </mat-card-actions>
         </mat-card-header>
 
+        <p>AVIS CENTRES DE TEST :</p>
         <mat-accordion multi="true" *ngIf="avisTest.length > 0">
             <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
                 <mat-expansion-panel-header>
                     {{avis.title}}
+                    <div class="spacer"></div>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
+
+                    <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
+
                 </mat-expansion-panel-header>
                 <p>{{avis.content}}</p>
                 <mat-action-row>
-                    <button mat-button color="primary">Y ALLER</button>
+                    <button routerLinkActive="true" [routerLink]="'/testCenter/' + avis.testCenterID" mat-button color="primary">Y ALLER</button>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
-        <p class="info-text mat-body-1" *ngIf="avisTest.length == 0">Vous n'avez pas encore laissé d'avis test</p>
+        <p *ngIf="avisTest.length == 0">Vous n'avez pas laissé d'avis sur un centre de test ...</p>
 
+        <p>AVIS CENTRES DE VACCINATION :</p>
         <mat-accordion multi="true" *ngIf="avisVacc.length > 0">
-            <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
+            <mat-expansion-panel hideToggle *ngFor="let avis of avisVacc">
                 <mat-expansion-panel-header>
                     {{avis.title}}
+                    <div class="spacer"></div>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 1">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 2">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 3">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 4">star</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating >= 5">star</mat-icon>
+
+                    <mat-icon color="accent" *ngIf="avis.rating < 2">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 3">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 4">star_border</mat-icon>
+                    <mat-icon color="accent" *ngIf="avis.rating < 5">star_border</mat-icon>
+
                 </mat-expansion-panel-header>
                 <p>{{avis.content}}</p>
                 <mat-action-row>
-                    <button mat-button color="primary">Y ALLER</button>
+                    <button routerLinkActive="true" [routerLink]="'/vaccinationCenter/' + avis.testCenterID" mat-button color="primary">Y ALLER</button>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
-        <p class="info-text mat-body-1" *ngIf="avisVacc.length == 0">Vous n'avez pas encore laissé d'avis vacc</p>
+        <p *ngIf="avisTest.length == 0">Vous n'avez pas laissé d'avis sur un centre de vaccination ...</p>
     </mat-card>
 </div>
 
