@@ -68,7 +68,7 @@ export class AvisTestService {
         }
 
         for (const avis of this._avis) {
-            if (avis.userID == id && avis.title) result.push(avis)
+            if (avis.userID == id) result.push(avis)
         }
         return result
     }

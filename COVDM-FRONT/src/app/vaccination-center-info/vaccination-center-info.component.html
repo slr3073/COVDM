@@ -18,7 +18,7 @@
                 {{center.adr_num + " " + center.adr_voie + ", " + center.com_nom + " (" + center.com_cp + ")"}}
             </mat-card-subtitle>
             <div class="spacer"></div>
-            <button mat-button color="primary">
+            <button mat-button color="primary" >
                 RENDEZ-VOUS
                 <mat-icon>open_in_new</mat-icon>
             </button>
@@ -67,6 +67,29 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+                <div mat-subheader>Avis des usagers :</div>
+                <mat-accordion multi="true">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p>test</p>
+                        </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p>test</p>
+                        </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p>test</p>
+                        </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p>test</p>
+                        </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </mat-list>
         </mat-card-content>
     </mat-card>

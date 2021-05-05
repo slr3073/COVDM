@@ -47,6 +47,7 @@ export class AvisVaccinationService {
             this.fetchAvisVaccination(()=> {
                 for (const avis of this._avis)
                     if (avis.testCenterID == id ) result.push(avis)
+
                 return result
             })
         }

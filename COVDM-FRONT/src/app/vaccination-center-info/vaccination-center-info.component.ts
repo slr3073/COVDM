@@ -3,6 +3,8 @@ import {Subscription} from "rxjs"
 import {ActivatedRoute, Params} from "@angular/router"
 import {VaccinationCenterService} from "../data/vaccination.service"
 import {VaccinationCenter} from "../data/models/vaccinationcenter.model"
+import {Avis} from "../data/models/avis.model"
+import {AvisVaccinationService} from "../data/avis-vaccination.service"
 
 @Component({
     selector: "app-vaccination-center-info",
@@ -11,7 +13,8 @@ import {VaccinationCenter} from "../data/models/vaccinationcenter.model"
 })
 export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     displayedColumns: string[] = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
-    horaires = []
+    horaires: any[] = []
+    avis: Avis[] = []
 
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
@@ -19,7 +22,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     isLoading: boolean = true
 
 
-    constructor(private route: ActivatedRoute, public vaccinationCenterService: VaccinationCenterService) {
+    constructor(private route: ActivatedRoute, public vaccinationCenterService: VaccinationCenterService, public avisVaccService: AvisVaccinationService) {
     }
 
     ngOnInit(): void {
@@ -37,6 +40,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
                     dimanche: this.center.rdv_dimanche,
                 }]
                 this.isLoading = false
+                this.avis = this.avisVaccService.getAvisByCenterID(params["centerID"])
             })
         })
     }

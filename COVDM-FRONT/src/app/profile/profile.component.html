@@ -13,7 +13,7 @@
         </mat-card-header>
         <mat-list>
             <mat-divider></mat-divider>
-            <div mat-subheader>AVIS CENTRES DE TEST :</div>
+            <div mat-subheader *ngIf="avisTest.length > 0">AVIS CENTRES DE TEST :</div>
             <mat-accordion multi="true" *ngIf="avisTest.length > 0">
                 <mat-expansion-panel hideToggle *ngFor="let avis of avisTest">
                     <mat-expansion-panel-header>
@@ -44,7 +44,7 @@
             </div>
             <mat-list-item></mat-list-item>
             <mat-divider></mat-divider>
-            <div mat-subheader>AVIS CENTRES DE VACCINATION :</div>
+            <div mat-subheader *ngIf="avisVacc.length > 0">AVIS CENTRES DE VACCINATION :</div>
             <mat-accordion multi="true" *ngIf="avisVacc.length > 0">
                 <mat-expansion-panel hideToggle *ngFor="let avis of avisVacc">
                     <mat-expansion-panel-header>
@@ -71,7 +71,7 @@
                     </mat-action-row>
                 </mat-expansion-panel>
             </mat-accordion>
-            <div mat-subheader *ngIf="avisTest.length == 0">
+            <div mat-subheader *ngIf="avisVacc.length == 0">
                 Vous n'avez pas laissé d'avis sur un centre de vaccination ...
             </div>
         </mat-list>

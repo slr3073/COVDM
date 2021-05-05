@@ -6,16 +6,28 @@
 
     <mat-card id="center-info">
         <mat-card-header>
-            <mat-card-title>{{center.rs}}</mat-card-title>
-            <mat-card-subtitle>{{center.adresse}}</mat-card-subtitle>
-            <div class="spacer"></div>
-            <mat-card-actions align="end">
-                <button mat-button color="primary">
-                    <mat-label>RENDEZ-VOUS </mat-label>
-                    <mat-icon>open_in_new</mat-icon>
-                </button>
-            </mat-card-actions>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star</mat-icon>
+            <mat-icon color="accent">star_border</mat-icon>
+            <mat-icon color="accent">star_border</mat-icon>
+            <mat-card-title>
+                <mat-label *ngIf="center.rs">{{center.rs}}</mat-label>
+                <mat-label *ngIf="center.check_rdv">{{" (" + center.check_rdv + " : "}}</mat-label>
+                <mat-label *ngIf="center.tel_rdv">{{center.tel_rdv + ")"}}</mat-label>
+            </mat-card-title>
+            <mat-card-subtitle *ngIf="center.adresse">{{center.adresse}}</mat-card-subtitle>
         </mat-card-header>
+        <mat-card-content>
+            <mat-list>
+                <mat-divider></mat-divider>
+                <div mat-subheader *ngIf="center.horaire">Horaires : {{center.horaire}}</div>
+                <div mat-subheader *ngIf="!center.horaire">Horaires : INDISPONIBLES</div>
+                <mat-divider></mat-divider>
+                <div mat-subheader *ngIf="center.do_antigenic == 'OUI'">PCR et Antigénique, {{center.mod_prel}}</div>
+                <div mat-subheader *ngIf="center.do_antigenic == 'NON'">PCR uniquement, {{center.mod_prel}}</div>
+            </mat-list>
+        </mat-card-content>
     </mat-card>
 </div>
 
