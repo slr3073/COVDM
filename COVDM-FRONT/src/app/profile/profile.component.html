@@ -1,7 +1,8 @@
 <div *ngIf="!isLoadingUser && !isLoadingAvisTest && !isLoadingAvisVacc">
     <mat-card id="user-info">
         <mat-card-header>
-            <mat-card-title>{{user.first_name}} {{user.last_name}}</mat-card-title>
+            <mat-card-title>{{user.first_name}} </mat-card-title>
+            <mat-card-subtitle>{{user.last_name}}</mat-card-subtitle>
             <img mat-card-avatar alt="unable to load"
                  [src]="user.picture">
             <div class="spacer"></div>
