@@ -19,15 +19,24 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
     centerId: string
+    moyenneNote: number
     isLoading: boolean = true
 
 
+    moyenne():number{
+        let valeurTotale : number = 0 ;
+        this.avis.forEach(valeur =>{
+            valeurTotale += valeur.rating
+        })
+        return Math.round(valeurTotale *2 /this.avis.length) /2
+    }
     constructor(private route: ActivatedRoute, public vaccinationCenterService: VaccinationCenterService, public avisVaccService: AvisVaccinationService) {
     }
 
     ngOnInit(): void {
         this.activeRouteSub = this.route.params.subscribe((params: Params) => {
             this.centerId = params["centerID"]
+            this.avis = this.avisVaccService.getAvisByCenterID(params["centerID"])
             this.vaccinationCenterService.fetchVaccinationCenters(() => {
                 this.center = this.vaccinationCenterService.getCenterByID(this.centerId)
                 this.horaires = [{
@@ -40,7 +49,8 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
                     dimanche: this.center.rdv_dimanche,
                 }]
                 this.isLoading = false
-                this.avis = this.avisVaccService.getAvisByCenterID(params["centerID"])
+                this.moyenneNote = this.moyenne()
+                console.warn(this.moyenneNote)
             })
         })
     }
