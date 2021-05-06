@@ -120,18 +120,37 @@ export class MapComponent implements OnInit, OnDestroy {
         })
         this.map.addControl(searchControl)
     }
+    deg2rad(deg) :number {
+        return deg * (Math.PI/180)
+    }
+
+    getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) : number {
+        let R = 6371; // Radius of the earth in km
+        let dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+        let dLon = this.deg2rad(lon2-lon1);
+       let a =
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+        ;
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return  R * c
+    }
+
 
     getVaccinationCenterMarker(vaccinationCenter: VaccinationCenter): any {
         let numaddr = vaccinationCenter.adr_num ?? ""
+        let distance = (this.hasAllowedGeolocation) ? "<b>Distance: </b>"+ Math.round(this.getDistanceFromLatLonInKm(this.u_latlng.u_lat, this.u_latlng.u_lng,
+                                                                                        vaccinationCenter.lat_coor1, vaccinationCenter.long_coor1)) +" Km" : ""
         return new (L.marker as any)({
-            lat: vaccinationCenter.lat_coor1,
-            lng: vaccinationCenter.long_coor1
+                lat: vaccinationCenter.lat_coor1,
+                lng: vaccinationCenter.long_coor1
         }, {icon: vaccineIcon})
             .bindPopup(
                 "<b>Nom : </b>" + vaccinationCenter.nom + "<br>" +
                 "<b>Adresse : </b>" + numaddr + " " + vaccinationCenter.adr_voie + "<br>" +
                 "<b>Ville : </b>" + vaccinationCenter.com_cp + " " + vaccinationCenter.com_nom + "<br>" +
-                "<b>Tel : </b>" + vaccinationCenter.rdv_tel + "<br>"
+                "<b>Tel : </b>" + vaccinationCenter.rdv_tel + "<br>"+ distance
             ).on("mouseover", (ev) => {
                 ev.target.openPopup()
             })
@@ -145,6 +164,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
     getTestCenter(testCenter: TestCenter): any {
         let horaire = testCenter.horaire || "<strong>HORAIRES INDISPONIBLES.</strong>"
+        let distance = (this.hasAllowedGeolocation) ? "<b>Distance: </b>"+ Math.round(this.getDistanceFromLatLonInKm(this.u_latlng.u_lat, this.u_latlng.u_lng,
+            testCenter.latitude, testCenter.longitude)) +" Km" : ""
         return new (L.marker as any)({
                 lat: testCenter.latitude,
                 lng: testCenter.longitude
@@ -155,7 +176,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 "<b>Adresse : </b>" + testCenter.adresse + "<br>" +
                 "<b>Prendre RDV : </b>" + testCenter.tel_rdv + "<br>" +
                 "<b>Horaires : </b>" + horaire + "<br>" +
-                "<b>Mode prélèvement : </b>" + testCenter.mod_prel
+                "<b>Mode prélèvement : </b>" + testCenter.mod_prel+"<br>"+ distance
             ).on("mouseover", (ev) => {
                 ev.target.openPopup()
             })
