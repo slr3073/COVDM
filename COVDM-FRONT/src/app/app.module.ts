@@ -16,12 +16,15 @@ import {MatIconModule} from "@angular/material/icon"
 import {MapOptionComponent} from "./home/elements/map-option/map-option.component"
 import {FormsModule} from "@angular/forms"
 import {MatInputModule} from "@angular/material/input"
-import {VaccinationCenterInfoComponent} from "./vaccination-center-info/vaccination-center-info.component"
-import {TestCenterInfoComponent} from "./test-center-info/test-center-info.component"
+import {VaccinationCenterInfoComponent} from "./center-display/vaccination-center-info/vaccination-center-info.component"
+import {TestCenterInfoComponent} from "./center-display/test-center-info/test-center-info.component"
 import {ProfileComponent} from "./profile/profile.component"
 import {MatCardModule} from "@angular/material/card"
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner"
-import {MatTableModule} from '@angular/material/table';
+import {MatTableModule} from "@angular/material/table"
+import {MatDialogModule} from "@angular/material/dialog";
+import { DialogInsertionAvisComponent } from './center-display/dialog-insertion-avis/dialog-insertion-avis.component'
+import {A11yModule} from '@angular/cdk/a11y'
 
 @NgModule({
     declarations: [
@@ -33,6 +36,7 @@ import {MatTableModule} from '@angular/material/table';
         VaccinationCenterInfoComponent,
         TestCenterInfoComponent,
         ProfileComponent,
+        DialogInsertionAvisComponent,
     ],
     imports: [
         MatListModule,
@@ -49,7 +53,9 @@ import {MatTableModule} from '@angular/material/table';
         MatInputModule,
         MatCardModule,
         MatProgressSpinnerModule,
-        MatTableModule
+        MatTableModule,
+        MatDialogModule,
+        A11yModule
     ],
     providers: [],
     bootstrap: [AppComponent]

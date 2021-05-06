@@ -1,12 +1,15 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
 import {Subscription} from "rxjs"
 import {ActivatedRoute, Params} from "@angular/router"
-import {VaccinationCenterService} from "../data/vaccination.service"
-import {VaccinationCenter} from "../data/models/vaccinationcenter.model"
-import {Avis} from "../data/models/avis.model"
-import {AvisVaccinationService} from "../data/avis-vaccination.service"
-import {User} from "../data/models/user.model"
-import {UserService} from "../data/user.service"
+import {VaccinationCenterService} from "../../data/vaccination.service"
+import {VaccinationCenter} from "../../data/models/vaccinationcenter.model"
+import {Avis} from "../../data/models/avis.model"
+import {AvisVaccinationService} from "../../data/avis-vaccination.service"
+import {User} from "../../data/models/user.model"
+import {UserService} from "../../data/user.service"
+import { MatDialog} from "@angular/material/dialog"
+import {DialogInsertionAvisComponent} from "../dialog-insertion-avis/dialog-insertion-avis.component"
+import {SharedDataService} from "../../data/shared.service"
 
 @Component({
     selector: "app-vaccination-center-info",
@@ -22,10 +25,17 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
     centerId: string
+
+
     isLoading: boolean = true
 
 
-    constructor(private route: ActivatedRoute, public vaccCenterService: VaccinationCenterService, public avisVaccService: AvisVaccinationService, public userService: UserService) {
+    constructor(private route: ActivatedRoute,
+                public vaccCenterService: VaccinationCenterService,
+                public avisVaccService: AvisVaccinationService,
+                public userService: UserService,
+                public dialog: MatDialog,
+                public sharedDataService: SharedDataService) {
     }
 
     average(): number {
@@ -40,7 +50,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
         return !(this.decimals(x) != 0)
     }
 
-    decimals(x: number): number{
+    decimals(x: number): number {
         return x - Math.trunc(x)
     }
 
@@ -70,7 +80,6 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
                             this.users.push(this.userService.getUserByID(avis.userID))
 
                         this.averageRating = this.average()
-                        console.log(this.averageRating)
                         this.isLoading = false
                     })
                 })
@@ -82,7 +91,26 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
         this.activeRouteSub.unsubscribe()
     }
 
+    openDialog(): void {
+        const dialogRef = this.dialog.open(DialogInsertionAvisComponent, {data: {rating: 3, title: "", content: ""}})
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return
+            let avis: Avis = {
+                rating: result.rating,
+                title: result.title,
+                content: result.content,
+                _id: undefined,
+                testCenterID: this.centerId,
+                userID: this.sharedDataService.user_id
+            }
+        })
+    }
+
     goToPage(url: string): void {
         window.location.href = url
     }
+
 }
+
+

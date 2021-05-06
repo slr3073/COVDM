@@ -1,12 +1,15 @@
 import {Component, OnDestroy, OnInit} from "@angular/core"
 import {ActivatedRoute, Params} from "@angular/router"
 import {Subscription} from "rxjs"
-import {TestCenter} from "../data/models/testcenters.model"
-import {TestCenterService} from "../data/testcenters.service"
-import {Avis} from "../data/models/avis.model"
-import {User} from "../data/models/user.model"
-import {AvisTestService} from "../data/avis-test.service"
-import {UserService} from "../data/user.service"
+import {TestCenter} from "../../data/models/testcenters.model"
+import {TestCenterService} from "../../data/testcenters.service"
+import {Avis} from "../../data/models/avis.model"
+import {User} from "../../data/models/user.model"
+import {AvisTestService} from "../../data/avis-test.service"
+import {UserService} from "../../data/user.service"
+import {DialogInsertionAvisComponent} from "../dialog-insertion-avis/dialog-insertion-avis.component"
+import {MatDialog} from "@angular/material/dialog"
+import {SharedDataService} from "../../data/shared.service"
 
 @Component({
     selector: "app-test-center-info",
@@ -22,7 +25,12 @@ export class TestCenterInfoComponent implements OnInit, OnDestroy {
     users: User[] = []
     averageRating: number = 0
 
-    constructor(private route: ActivatedRoute, public testCenterService: TestCenterService, public avisTestService: AvisTestService, public userService: UserService) {
+    constructor(private route: ActivatedRoute,
+                public testCenterService: TestCenterService,
+                public avisTestService: AvisTestService,
+                public userService: UserService,
+                public dialog: MatDialog,
+                public sharedDataService: SharedDataService) {
     }
 
     average(): number {
@@ -61,6 +69,22 @@ export class TestCenterInfoComponent implements OnInit, OnDestroy {
                     })
                 })
             })
+        })
+    }
+
+    openDialog(): void {
+        const dialogRef = this.dialog.open(DialogInsertionAvisComponent, {data: {rating: 3, title: "", content: ""}})
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return
+            let avis: Avis = {
+                rating: result.rating,
+                title: result.title,
+                content: result.content,
+                _id: undefined,
+                testCenterID: this.centerId,
+                userID: this.sharedDataService.user_id
+            }
         })
     }
 

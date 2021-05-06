@@ -9,7 +9,8 @@
             <mat-icon color="accent" *ngFor="let i of [].constructor(truncate(averageRating))">star</mat-icon>
             <mat-icon color="accent" *ngIf="!isInteger(averageRating)">star_half</mat-icon>
             <mat-icon color="accent" *ngIf="isInteger(averageRating)">star_border</mat-icon>
-            <mat-icon color="accent" *ngFor="let i of [].constructor(4 - truncate(averageRating))">star_border</mat-icon>
+            <mat-icon color="accent" *ngFor="let i of [].constructor(4 - truncate(averageRating))">star_border
+            </mat-icon>
             <mat-card-title>
                 <mat-label *ngIf="center.rs">{{center.rs}}</mat-label>
                 <mat-label *ngIf="center.check_rdv">{{" (" + center.check_rdv + " : "}}</mat-label>
@@ -50,8 +51,18 @@
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                         <p mat-subheader>{{avisTest.content}}</p>
+                        <mat-action-row>
+                            <button mat-button routerLinkActive="true"
+                                    [routerLink]="'/profile/' + avis[i].userID">VOIR PROFIL
+                            </button>
+                        </mat-action-row>
                     </mat-expansion-panel>
                 </mat-accordion>
+                <mat-list-item></mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-action-list>
+                    <button mat-raised-button color="primary" (click)="openDialog()">LAISSER AVIS</button>
+                </mat-action-list>
             </mat-list>
         </mat-card-content>
     </mat-card>

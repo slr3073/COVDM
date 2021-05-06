@@ -13,7 +13,7 @@ import {TestCenter} from "../../../data/models/testcenters.model"
 import {TestCenterService} from "../../../data/testcenters.service"
 import {VaccinationCenter} from "../../../data/models/vaccinationcenter.model"
 import {VaccinationCenterService} from "../../../data/vaccination.service"
-import {GlobalLatLngService} from "../../../data/shared.service"
+import {SharedDataService} from "../../../data/shared.service"
 
 // Nécessaire pour l'ombre de l'icone...
 const iconRetinaUrl = "assets/marker-icon-2x.png"
@@ -53,7 +53,7 @@ let testCenterIcon = new (L.icon as any)({
     selector: "app-map",
     templateUrl: "./map.component.html",
     styleUrls: ["./map.component.scss"],
-    providers: [GlobalLatLngService]
+    providers: [SharedDataService]
 })
 export class MapComponent implements OnInit, OnDestroy {
     private map
@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     constructor(public testCenterService: TestCenterService,
                 public vaccinationCenterService: VaccinationCenterService,
-                public u_latlng: GlobalLatLngService,
+                public u_latlng: SharedDataService,
                 private router: Router) {
     }
 
