@@ -18,6 +18,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     horaires: any[] = []
     avis: Avis[] = []
     users: User[] = []
+    averageRating: number = 0
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
     centerId: string
@@ -27,12 +28,24 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute, public vaccCenterService: VaccinationCenterService, public avisVaccService: AvisVaccinationService, public userService: UserService) {
     }
 
-    moyenne(): number {
+    average(): number {
         let valeurTotale: number = 0
         this.avis.forEach(valeur => {
             valeurTotale += valeur.rating
         })
         return Math.round(valeurTotale * 2 / this.avis.length) / 2
+    }
+
+    isInteger(x: number): boolean {
+        return this.decimals(x) >= 1
+    }
+
+    decimals(x: number): number{
+        return x - Math.trunc(x)
+    }
+
+    truncate(x: number): number {
+        return Math.trunc(x)
     }
 
     ngOnInit(): void {
@@ -43,6 +56,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
             this.vaccCenterService.fetchVaccinationCenters(() => {
                 this.avisVaccService.getAvisByCenterID(params["centerID"], (avis: Avis[]) => {
                     this.userService.fetchUsers(() => {
+
                         this.center = this.vaccCenterService.getCenterByID(this.centerId)
                         this.horaires = [{
                             lundi: this.center.rdv_lundi,
@@ -56,6 +70,9 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
                         this.avis = avis
                         for (const avis of this.avis)
                             this.users.push(this.userService.getUserByID(avis.userID))
+
+                        this.averageRating = this.average()
+                        console.log(this.averageRating)
                         this.isLoading = false
                     })
                 })

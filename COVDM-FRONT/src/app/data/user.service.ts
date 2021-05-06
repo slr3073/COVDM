@@ -16,7 +16,10 @@ export class UserService {
     }
 
     fetchUsers(callback: () => void): void {
-        if(this._usersFetched) callback()
+        if(this._usersFetched) {
+            callback()
+            return
+        }
         this.http.get<GetUserResponse[]>("http://localhost:4000/getUsers")
             .subscribe((data: GetUserResponse[]) => {
                 let users: User[] = []

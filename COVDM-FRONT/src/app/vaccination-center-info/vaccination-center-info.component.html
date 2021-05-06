@@ -5,11 +5,10 @@
 <div *ngIf="!isLoading">
     <mat-card id="center-info">
         <mat-card-header>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star_border</mat-icon>
-            <mat-icon color="accent">star_border</mat-icon>
+            <mat-icon color="accent" *ngFor="let i of [].constructor(truncate(averageRating))">star</mat-icon>
+            <mat-icon color="accent" *ngIf="!isInteger(averageRating)">star_half</mat-icon>
+            <mat-icon color="accent" *ngFor="let i of [].constructor(4 - truncate(averageRating))">star_border</mat-icon>
+
             <mat-card-title>
                 <mat-label>{{center.nom}}</mat-label>
                 <mat-label *ngIf="center.rdv_tel">{{" (" + center.rdv_tel + ")"}}</mat-label>
@@ -75,7 +74,6 @@
                             <mat-panel-title>
                                 <b>{{users[i].first_name + " :"}}&nbsp;</b>
                                 <p>{{avisVacc.title}}</p>
-
                             </mat-panel-title>
 
                             <mat-panel-description>
