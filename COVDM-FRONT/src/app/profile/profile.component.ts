@@ -6,6 +6,7 @@ import {UserService} from "../data/user.service"
 import {Avis} from "../data/models/avis.model"
 import {AvisTestService} from "../data/avis-test.service"
 import {AvisVaccinationService} from "../data/avis-vaccination.service"
+import {SharedDataService} from "../data/shared.service"
 
 @Component({
     selector: "app-profile",
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     avisTest: Avis[] = []
     avisVacc: Avis[] = []
 
-    constructor(private route: ActivatedRoute, public userService: UserService, public avisTestService: AvisTestService, public avisVaccService: AvisVaccinationService) {
+    constructor(private route: ActivatedRoute, public userService: UserService, public avisTestService: AvisTestService,public sharedService : SharedDataService, public avisVaccService: AvisVaccinationService) {
     }
 
     ngOnInit(): void {

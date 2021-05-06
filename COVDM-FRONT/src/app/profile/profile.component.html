@@ -6,9 +6,9 @@
             <img mat-card-avatar alt="unable to load"
                  [src]="user.picture">
             <div class="spacer"></div>
-            <mat-card-actions align="end">
+            <mat-card-actions *ngIf="user._id != sharedService.user_id" align="end">
                 <button mat-raised-button color="primary">MODIFIER</button>
-                <button mat-raised-button color="warn">DECONNEXION</button>
+                <button  mat-raised-button color="warn">DECONNEXION</button>
             </mat-card-actions>
         </mat-card-header>
         <mat-list>
