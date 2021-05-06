@@ -37,7 +37,7 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     }
 
     isInteger(x: number): boolean {
-        return this.decimals(x) >= 1
+        return !(this.decimals(x) != 0)
     }
 
     decimals(x: number): number{
@@ -49,14 +49,12 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.activeRouteSub = this.route.params.subscribe((params: Params) => {
             this.centerId = params["centerID"]
 
             this.vaccCenterService.fetchVaccinationCenters(() => {
                 this.avisVaccService.getAvisByCenterID(params["centerID"], (avis: Avis[]) => {
                     this.userService.fetchUsers(() => {
-
                         this.center = this.vaccCenterService.getCenterByID(this.centerId)
                         this.horaires = [{
                             lundi: this.center.rdv_lundi,

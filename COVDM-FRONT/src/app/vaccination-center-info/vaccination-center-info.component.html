@@ -7,6 +7,7 @@
         <mat-card-header>
             <mat-icon color="accent" *ngFor="let i of [].constructor(truncate(averageRating))">star</mat-icon>
             <mat-icon color="accent" *ngIf="!isInteger(averageRating)">star_half</mat-icon>
+            <mat-icon color="accent" *ngIf="isInteger(averageRating)">star_border</mat-icon>
             <mat-icon color="accent" *ngFor="let i of [].constructor(4 - truncate(averageRating))">star_border</mat-icon>
 
             <mat-card-title>
