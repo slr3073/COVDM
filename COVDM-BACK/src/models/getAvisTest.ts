@@ -1,7 +1,6 @@
 import mongoose, {Schema, Document} from "mongoose"
 
-export interface AvisTest extends Document {
-    _id: object,
+export interface IAvisTest extends Document {
     center_id: string,
     user_id: string,
     note: number,
@@ -10,7 +9,6 @@ export interface AvisTest extends Document {
 }
 
 const getAvisTestSchema: Schema = new Schema({
-    _id: {type: Object},
     center_id: {type: String},
     user_id: {type: String},
     note: {type: Number},
@@ -18,4 +16,4 @@ const getAvisTestSchema: Schema = new Schema({
     com: {type: String},
 })
 
-export default mongoose.model<AvisTest>("avis_test", getAvisTestSchema, "avis_test")
+export default mongoose.model<IAvisTest>("avis_test", getAvisTestSchema, "avis_test")

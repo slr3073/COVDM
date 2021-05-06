@@ -54,17 +54,20 @@ export class TestCenterInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+
         this.activeRouteSub = this.route.params.subscribe((params: Params) => {
             this.centerId = params["centerID"]
             this.testCenterService.fetchTestCenters(() => {
                 this.avisTestService.getAvisByCenterID(params["centerID"], (result: Avis[]) => {
                     this.userService.fetchUsers(() => {
+                        console.log("fetchUsers")
+                        this.users = []
                         this.center = this.testCenterService.getCenterByID(this.centerId)
+
                         this.avis = result
                         for (const avis of this.avis)
                             this.users.push(this.userService.getUserByID(avis.userID))
                         this.averageRating = this.average()
-                        console.log(this.averageRating)
                         this.isLoading = false
                     })
                 })
@@ -77,14 +80,21 @@ export class TestCenterInfoComponent implements OnInit, OnDestroy {
 
         dialogRef.afterClosed().subscribe(result => {
             if (!result) return
-            let avis: Avis = {
+            let avis1: Avis = {
+                _id: undefined,
                 rating: result.rating,
                 title: result.title,
                 content: result.content,
-                _id: undefined,
                 testCenterID: this.centerId,
                 userID: this.sharedDataService.user_id
             }
+            this.avisTestService.addAvis(avis1, (avis2: Avis) => {
+                console.log(avis2)
+                this.avisTestService.avisFetched = false
+                this.users.push(this.userService.getUserByID(avis2.userID))
+                this.avis.push(avis2)
+            })
+
         })
     }
 

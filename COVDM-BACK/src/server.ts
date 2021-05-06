@@ -1,11 +1,12 @@
 import express, {Express, NextFunction, Request, Response} from "express"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
-import avis_test from "./models/getAvisTest"
-import avis_vacc from "./models/getAvisVacc"
+import avis_test, {IAvisTest} from "./models/getAvisTest"
+import avis_vacc, {IAvisVacc} from "./models/getAvisVacc"
 import vaccination_centers from "./models/getVaccinationCenters"
 import users from "./models/getUsers"
 import test_centers from "./models/getTestCenters"
+import {log} from "util"
 
 export class Server {
     constructor(readonly port: number) {
@@ -58,6 +59,30 @@ export class Server {
             avis_test.find().then(posts => {
                 res.status(200).json(posts)
             })
+        })
+
+        app.post("/postAvisTest", (req: Request, res: Response) => {
+            const avis: IAvisTest = new avis_test({
+                center_id: req.body.center_id,
+                user_id: req.body.user_id,
+                note: req.body.note,
+                titre: req.body.titre,
+                com: req.body.com
+            })
+            avis.save()
+            res.status(201).json({id: avis.id})
+        })
+
+        app.post("/postAvisVacc", (req: Request, res: Response) => {
+            const avis: IAvisVacc = new avis_vacc({
+                center_id: req.body.center_id,
+                user_id: req.body.user_id,
+                note: req.body.note,
+                titre: req.body.titre,
+                com: req.body.com
+            })
+            avis.save().catch((reason => console.log("erreur")))
+            res.status(201).json({id: avis.id})
         })
 
         app.listen(this.port)

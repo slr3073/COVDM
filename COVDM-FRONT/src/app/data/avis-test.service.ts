@@ -2,25 +2,21 @@ import {Injectable} from "@angular/core"
 import {HttpClient} from "@angular/common/http"
 import {GetAvisResponse} from "./models/http/GET-avis.model"
 import {Avis} from "./models/avis.model"
-import {Observable, Subject} from "rxjs"
+import {Subject} from "rxjs"
 
 @Injectable({
     providedIn: "root"
 })
 export class AvisTestService {
-    private _avisFetched: boolean = false
+    avisFetched: boolean = false
     private _avis: Avis[] = []
     private _avisUpdated: Subject<Avis[]> = new Subject<Avis[]>()
 
     constructor(private http: HttpClient) {
     }
 
-    get testAvisTestObservable(): Observable<Avis[]> {
-        return this._avisUpdated.asObservable()
-    }
-
     fetchAvisTest(callback: () => void): void {
-        if (this._avisFetched) callback()
+        if (this.avisFetched) callback()
         this.http.get<GetAvisResponse[]>("http://localhost:4000/getAvisTest")
             .subscribe((data: GetAvisResponse[]) => {
                 let listeAvis: Avis[] = []
@@ -38,14 +34,14 @@ export class AvisTestService {
 
                 this._avis = [...listeAvis]
                 this._avisUpdated.next(this._avis)
-                this._avisFetched = true
+                this.avisFetched = true
                 callback()
             })
     }
 
-    getAvisByCenterID(id: string, callback: (result: Avis[]) => void ){
+    getAvisByCenterID(id: string, callback: (result: Avis[]) => void) {
         let result: Avis[] = []
-        if (!this._avisFetched) {
+        if (!this.avisFetched) {
             this.fetchAvisTest(() => {
                 for (const avis of this._avis)
                     if (avis.testCenterID == id) result.push(avis)
@@ -55,12 +51,14 @@ export class AvisTestService {
         }
         for (const avis of this._avis)
             if (avis.testCenterID == id) result.push(avis)
+
+
         callback(result)
     }
 
     getAvisByUserID(id: string): Avis[] {
         let result: Avis[] = []
-        if (!this._avisFetched) {
+        if (!this.avisFetched) {
             this.fetchAvisTest(() => {
                 for (const avis of this._avis)
                     if (avis.userID == id) result.push(avis)
@@ -71,6 +69,23 @@ export class AvisTestService {
         for (const avis of this._avis) {
             if (avis.userID == id) result.push(avis)
         }
+
         return result
+    }
+
+    addAvis(avis, callback: (avis: Avis) => void) {
+        this.http.post("http://localhost:4000/postAvisTest",avis).subscribe((response)=>{
+            let avis2: Avis = {
+                rating: avis.rating,
+                title: avis.title,
+                content: avis.content,
+                _id: response["id"],
+                testCenterID: avis.testCenterID,
+                userID: avis.userID
+            }
+            console.log(avis2)
+            this._avis.push(avis2)
+            callback(avis2)
+        })
     }
 }

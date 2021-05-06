@@ -16,7 +16,10 @@ export class TestCenterService {
     }
 
     fetchTestCenters(callback: () => void): void {
-        if (this._centersFetched) callback()
+        if (this._centersFetched) {
+            callback()
+
+        }
 
         this.http.get<GetTestCenterResponse[]>("http://localhost:4000/getTestCenters")
             .subscribe((data: GetTestCenterResponse[]) => {
@@ -45,7 +48,8 @@ export class TestCenterService {
             })
 
     }
-
+//609405f8ea35c33130526b07
+//
     getCenterByID(id: string): TestCenter {
         for (const center of this._testCenters)
             if (id == center._id) return center

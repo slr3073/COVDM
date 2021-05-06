@@ -1,8 +1,6 @@
 import mongoose, {Schema, Document} from "mongoose"
 
-export interface AvisVacc extends Document {
-    _id: object,
-    center_id: string,
+export interface IAvisVacc extends Document {
     user_id: string,
     note: number,
     titre: string,
@@ -10,7 +8,6 @@ export interface AvisVacc extends Document {
 }
 
 const getAvisVaccSchema: Schema = new Schema({
-    _id: {type: Object},
     center_id: {type: String},
     user_id: {type: String},
     note: {type: Number},
@@ -18,4 +15,4 @@ const getAvisVaccSchema: Schema = new Schema({
     com: {type: String},
 })
 
-export default mongoose.model<AvisVacc>("avis_vacc", getAvisVaccSchema, "avis_vacc")
+export default mongoose.model<IAvisVacc>("avis_vacc", getAvisVaccSchema, "avis_vacc")
