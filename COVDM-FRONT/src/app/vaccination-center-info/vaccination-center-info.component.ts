@@ -18,7 +18,6 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
     horaires: any[] = []
     avis: Avis[] = []
     users: User[] = []
-
     private activeRouteSub: Subscription
     center: VaccinationCenter = null
     centerId: string
@@ -26,6 +25,14 @@ export class VaccinationCenterInfoComponent implements OnInit, OnDestroy {
 
 
     constructor(private route: ActivatedRoute, public vaccCenterService: VaccinationCenterService, public avisVaccService: AvisVaccinationService, public userService: UserService) {
+    }
+
+    moyenne(): number {
+        let valeurTotale: number = 0
+        this.avis.forEach(valeur => {
+            valeurTotale += valeur.rating
+        })
+        return Math.round(valeurTotale * 2 / this.avis.length) / 2
     }
 
     ngOnInit(): void {
