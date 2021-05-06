@@ -18,16 +18,15 @@
                 {{center.adr_num + " " + center.adr_voie + ", " + center.com_nom + " (" + center.com_cp + ")"}}
             </mat-card-subtitle>
             <div class="spacer"></div>
-            <button mat-button color="primary" >
+            <button mat-button color="primary" (click)="goToPage(center.rdv_site_web)">
                 RENDEZ-VOUS
                 <mat-icon>open_in_new</mat-icon>
             </button>
         </mat-card-header>
-
         <mat-card-content>
             <mat-list>
                 <mat-divider></mat-divider>
-                <div mat-subheader>Horaires :</div>
+                <div mat-subheader>HORAIRES :</div>
                 <table mat-table [dataSource]="horaires" class="mat-elevation-z8">
                     <ng-container matColumnDef="lundi">
                         <th mat-header-cell *matHeaderCellDef>LUNDI</th>
@@ -67,27 +66,33 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-                <div mat-subheader>Avis des usagers :</div>
+                <div mat-subheader>AVIS USAGERS :</div>
                 <mat-accordion multi="true">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel *ngFor="let avisVacc of avis; let i =index" hideToggle>
                         <mat-expansion-panel-header>
-                            <p>test</p>
+                            <img mat-card-avatar alt="unable to load" [src]=users[i].picture>
+
+                            <mat-panel-title>
+                                <b>{{users[i].first_name + " :"}}&nbsp;</b>
+                                <p>{{avisVacc.title}}</p>
+
+                            </mat-panel-title>
+
+                            <mat-panel-description>
+                                <div class="spacer"></div>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating >= 1">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating >= 2">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating >= 3">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating >= 4">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating >= 5">star</mat-icon>
+
+                                <mat-icon color="warn" *ngIf="avisVacc.rating < 2">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating < 3">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating < 4">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisVacc.rating < 5">star_border</mat-icon>
+                            </mat-panel-description>
                         </mat-expansion-panel-header>
-                    </mat-expansion-panel>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <p>test</p>
-                        </mat-expansion-panel-header>
-                    </mat-expansion-panel>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <p>test</p>
-                        </mat-expansion-panel-header>
-                    </mat-expansion-panel>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <p>test</p>
-                        </mat-expansion-panel-header>
+                        <p mat-subheader>{{avisVacc.content}}</p>
                     </mat-expansion-panel>
                 </mat-accordion>
             </mat-list>
