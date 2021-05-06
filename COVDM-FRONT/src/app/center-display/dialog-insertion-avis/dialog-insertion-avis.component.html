@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Laisser un avis</h1>
+<div mat-dialog-content>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Titre de l'avis</mat-label>
+            <input matInput #avisTitle="ngModel" minlength="1" maxlength="100" required [(ngModel)]="data.title"
+                   placeholder="Ex. Rien à signaler !">
+            <mat-icon [color]="getRightColor(avisTitle.invalid, avisTitle.touched)" matSuffix>title</mat-icon>
+            <mat-hint align="end">{{avisTitle.value?.length || 0}}/100</mat-hint>
+            <mat-error *ngIf="avisTitle.invalid">"Titre invalide !"</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Corps de l'avis</mat-label>
+            <textarea matInput #avisContent="ngModel" minlength="1" maxlength="100" rows="5" required
+                      [(ngModel)]="data.content"
+                      placeholder="Ex. Tout c'est très bien passé, rien à redire !"></textarea>
+            <mat-icon [color]="getRightColor(avisContent.invalid, avisContent.touched)" matSuffix>article</mat-icon>
+            <mat-hint align="end">{{avisContent.value?.length || 0}}/1000</mat-hint>
+            <mat-error *ngIf="avisContent.invalid">"Corps invalide !"</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Note de l'avis</mat-label>
+            <input matInput type="number" min="1" max="5" required [(ngModel)]="data.rating">
+            <span matPrefix>
+                <mat-icon color="accent">star</mat-icon>
+            </span>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onNoClick()">Annuler</button>
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" [disabled]="avisTitle.invalid || avisContent.invalid"
+            [mat-dialog-close]="data">Valider
+    </button>
+</div>
