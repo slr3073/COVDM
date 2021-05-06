@@ -43,18 +43,19 @@ export class AvisTestService {
             })
     }
 
-    getAvisByCenterID(id: string): Avis[] {
+    getAvisByCenterID(id: string, callback: (result: Avis[]) => void ){
         let result: Avis[] = []
         if (!this._avisFetched) {
             this.fetchAvisTest(() => {
                 for (const avis of this._avis)
                     if (avis.testCenterID == id) result.push(avis)
-                return result
+                callback(result)
             })
+            return
         }
         for (const avis of this._avis)
             if (avis.testCenterID == id) result.push(avis)
-        return result
+        callback(result)
     }
 
     getAvisByUserID(id: string): Avis[] {

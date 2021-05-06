@@ -6,11 +6,10 @@
 
     <mat-card id="center-info">
         <mat-card-header>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star</mat-icon>
-            <mat-icon color="accent">star_border</mat-icon>
-            <mat-icon color="accent">star_border</mat-icon>
+            <mat-icon color="accent" *ngFor="let i of [].constructor(truncate(averageRating))">star</mat-icon>
+            <mat-icon color="accent" *ngIf="!isInteger(averageRating)">star_half</mat-icon>
+            <mat-icon color="accent" *ngIf="isInteger(averageRating)">star_border</mat-icon>
+            <mat-icon color="accent" *ngFor="let i of [].constructor(4 - truncate(averageRating))">star_border</mat-icon>
             <mat-card-title>
                 <mat-label *ngIf="center.rs">{{center.rs}}</mat-label>
                 <mat-label *ngIf="center.check_rdv">{{" (" + center.check_rdv + " : "}}</mat-label>
@@ -26,6 +25,33 @@
                 <mat-divider></mat-divider>
                 <div mat-subheader *ngIf="center.do_antigenic == 'OUI'">PCR et Antigénique, {{center.mod_prel}}</div>
                 <div mat-subheader *ngIf="center.do_antigenic == 'NON'">PCR uniquement, {{center.mod_prel}}</div>
+                <mat-accordion multi="true">
+                    <mat-expansion-panel *ngFor="let avisTest of avis; let i =index" hideToggle>
+                        <mat-expansion-panel-header>
+                            <img mat-card-avatar alt="unable to load" [src]=users[i].picture>
+
+                            <mat-panel-title>
+                                <b>{{users[i].first_name + " :"}}&nbsp;</b>
+                                <p>{{avisTest.title}}</p>
+                            </mat-panel-title>
+
+                            <mat-panel-description>
+                                <div class="spacer"></div>
+                                <mat-icon color="warn" *ngIf="avisTest.rating >= 1">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating >= 2">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating >= 3">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating >= 4">star</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating >= 5">star</mat-icon>
+
+                                <mat-icon color="warn" *ngIf="avisTest.rating < 2">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating < 3">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating < 4">star_border</mat-icon>
+                                <mat-icon color="warn" *ngIf="avisTest.rating < 5">star_border</mat-icon>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <p mat-subheader>{{avisTest.content}}</p>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </mat-list>
         </mat-card-content>
     </mat-card>

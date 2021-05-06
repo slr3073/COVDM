@@ -41,19 +41,23 @@ export class AvisVaccinationService {
             })
     }
 
-    getAvisByCenterID(id: string ): Avis[] {
+    getAvisByCenterID(id: string, callback: (result: Avis[]) => void ){
         let result: Avis[] = []
         if (!this._avisFetched){
             this.fetchAvisVaccination(()=> {
                 for (const avis of this._avis)
                     if (avis.testCenterID == id ) result.push(avis)
 
-                return result
+                callback(result)
+
+
             })
+            return
         }
         for (const avis of this._avis)
             if (avis.testCenterID == id ) result.push(avis)
-        return result
+
+        callback(result)
     }
 
     getAvisByUserID(id: string ): Avis[] {
