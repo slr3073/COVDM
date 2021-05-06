@@ -63,6 +63,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     testCenters: TestCenter[] = []
     vaccinationCenters: VaccinationCenter[] = []
+    TenKMRadius
 
     private _testCenterSub: Subscription = new Subscription()
     private _vaccinationCenterSub: Subscription = new Subscription()
@@ -97,10 +98,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
                 const latlng = new LatLng(this.u_latlng.u_lat, this.u_latlng.u_lng)
 
+                this.TenKMRadius = L.circle({lat: this.u_latlng.u_lat, lng: this.u_latlng.u_lng}, {radius: 10000})
                 L.marker(latlng).addTo(this.map).bindPopup("Vous êtes ici.")
-
-                L.circle(latlng, {radius: 10000}).addTo(this.map)
-                this.map.flyTo(latlng, 10, {animate: true, duration: 1.5})
+                this.map.flyTo(latlng, 11.5, {animate: true, duration: 1.5})
             })
         } else {
             console.error("L'utilisateur a décliné la géolocalisation.")
@@ -230,17 +230,21 @@ export class MapComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToLocation(lat: number, lng: number): void {
-        this.map.flyTo({lat: lat, lng: lng}, 10, {animate: true, duration: 1.5})
-    }
-
     toggleVaccinationCenters(hide): void {
-        if (hide) this.map.addLayer(this.markersVaccineCluster)
-        else this.map.removeLayer(this.markersVaccineCluster)
+        (hide) ? this.map.addLayer(this.markersVaccineCluster) : this.map.removeLayer(this.markersVaccineCluster)
     }
 
     toggleTestCenters(hide): void {
-        if (hide) this.map.addLayer(this.markersTestCCluster)
-        else this.map.removeLayer(this.markersTestCCluster)
+        (hide) ? this.map.addLayer(this.markersTestCCluster) : this.map.removeLayer(this.markersTestCCluster)
+    }
+
+    toogle10kmCircleRadius(hide): void {
+
+        if (this.hasAllowedGeolocation && hide) {
+            this.map.addLayer(this.TenKMRadius)
+        } else {
+            this.map.removeLayer(this.TenKMRadius)
+        }
+
     }
 }

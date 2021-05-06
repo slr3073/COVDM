@@ -21,4 +21,8 @@ export class HomeComponent {
         this.map.toggleTestCenters(hide)
     }
 
+    updateRangeDisplay(hide: boolean){
+        this.map.toogle10kmCircleRadius(hide)
+    }
+
 }
