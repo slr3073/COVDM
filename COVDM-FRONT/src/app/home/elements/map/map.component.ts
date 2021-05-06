@@ -120,6 +120,7 @@ export class MapComponent implements OnInit, OnDestroy {
         })
         this.map.addControl(searchControl)
     }
+
     deg2rad(deg) :number {
         return deg * (Math.PI/180)
     }
@@ -136,7 +137,6 @@ export class MapComponent implements OnInit, OnDestroy {
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return  R * c
     }
-
 
     getVaccinationCenterMarker(vaccinationCenter: VaccinationCenter): any {
         let numaddr = vaccinationCenter.adr_num ?? ""
@@ -225,8 +225,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     goBackToLocation(): void {
-        if (!this.hasAllowedGeolocation) {
-            this.map.flyTo({lat: this.u_latlng.u_lat, lng: this.u_latlng.u_lng}, 10, {animate: true, duration: 1.5})
+        if (this.hasAllowedGeolocation) {
+            this.map.flyTo({lat: this.u_latlng.u_lat, lng: this.u_latlng.u_lng}, 11.5, {animate: true, duration: 1.5})
         }
     }
 
